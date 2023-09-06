@@ -1,16 +1,16 @@
 # ToDo Today
 ### Repo: ToDo list for Today (thsoha)
 
-ToDo Today is a simple task management application for small one user projects. ToDos (tasks) with a deadline are linked to a project and a ToDo is classified with a type.
+ToDo Today is a simple task management application for small one user projects. ToDos (tasks) with a deadline are linked to a project and a ToDo is classified with a type. 
+
+For example a student can use this application to follow on a daily basis, which tasks, essays, reports, meetings, teamworks etc. are due today or tomorrow. From a simple view the student can see how completing of different courses (= projects) is going. 
 
 ## Features
 - Create a user account
 - Login and logout with the account
-- User can view/edit/delete only his/hers projects and tasks
-- Add ToDo types
+- User can view/edit/delete only his/hers projects, tasks and task types
 - View of ToDos: "ToDos for Today", "Late ToDos", "ToDos for Tomorrow" 
 - View of all projects and their status: done/total ToDos
-- Mark ToDos as done 
   
 ## Database
 
@@ -53,7 +53,7 @@ ToDo Today is a simple task management application for small one user projects. 
 - 6th Sep 2023 First draft of the plan
 - Keeping it simple so editing is mostly create/delete
   
-### Not included – Possible future development
-Some placeholders for these are in the design
+### Future development / if there is time
 - Add multiple users on a project
 - Assigning a ToDo to another user in the project
+- Copy a project with tasks to another user
