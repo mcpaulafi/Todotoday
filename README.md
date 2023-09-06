@@ -11,7 +11,13 @@ For example a student can use this application to follow on a daily basis, which
 - User can view/edit/delete only his/hers projects, tasks and task types
 - View of ToDos: "ToDos for Today", "ToDos for Tomorrow", "Late ToDos" 
 - View of status: done/total ToDos per project
-  
+
+## Screenshots (drafts)
+<img src="https://github.com/mcpaulafi/Todotoday/blob/main/Drafts/todo_user.png" border=1>
+<img src="https://github.com/mcpaulafi/Todotoday/blob/main/Drafts/todo_list.png" border=1>
+<img src="https://github.com/mcpaulafi/Todotoday/blob/main/Drafts/todo_status.png" border=1>
+<img src="https://github.com/mcpaulafi/Todotoday/blob/main/Drafts/todo_manage.png" border=1>
+
 ## Database
 
 ### User
