@@ -3,14 +3,14 @@
 
 ToDo Today is a simple task management application for small one user projects. ToDos (tasks) with a deadline are linked to a project and a ToDo is classified with a type. 
 
-For example a student can use this application to follow on a daily basis, which tasks, essays, reports, meetings, teamworks etc. are due today or tomorrow. From a simple view the student can see how completing of different courses (= projects) is going. 
+For example a student can use this application to follow on a daily basis, which tasks, essays, reports, meetings, teamworks etc. are due today, tomorrow or late. From a simple view the student can see how completing of different courses (= projects) is going. 
 
 ## Features
 - Create a user account
 - Login and logout with the account
 - User can view/edit/delete only his/hers projects, tasks and task types
-- View of ToDos: "ToDos for Today", "Late ToDos", "ToDos for Tomorrow" 
-- View of all projects and their status: done/total ToDos
+- View of ToDos: "ToDos for Today", "ToDos for Tomorrow", "Late ToDos" 
+- View of status: done/total ToDos per project
   
 ## Database
 
@@ -51,7 +51,7 @@ For example a student can use this application to follow on a daily basis, which
 ## Implementation Plan / development log
 - This project is made on "TKT20019 Tietokannat ja web-ohjelmointi" course in the University of Helsinki
 - 6th Sep 2023 First draft of the plan
-- Keeping it simple so editing is mostly create/delete
+- Keeping it simple so editing will be mostly create/delete
   
 ### Future development / if there is time
 - Add multiple users on a project
