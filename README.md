@@ -9,7 +9,7 @@ For example a student can use this application to follow on a daily basis, which
 - Create a user account
 - Login and logout with the account
 - User can view/edit/delete only his/hers projects, tasks and task types
-- View of ToDos: "ToDos for Today", "ToDos for Tomorrow", "Late ToDos" 
+- View of ToDos: "ToDos for Today", "ToDos for Tomorrow", "All Open ToDos" 
 - View of status: done/total ToDos per project
 
 ## Screenshots 
