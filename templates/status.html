@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block title %}Status per project{% endblock %}
+{% block topic %}Status per project{% endblock %}
+{% block content %}
+
+    {% if session.user_id %}
+        <!--TODO Parempi olisi hakea käyttäjänimi kannasta kuin sessiosta-->
+        <p>Logged in as: {{ session.username }}         
+        {% if error_message %}
+            <p class="error">{{ error_message }} </p>
+        {% endif %}
+
+        {% for col in projects %}
+            <h2>{{ col[1] }}: {{ col[2] }}/{{ col[3] }} completed</h2>
+            <table>
+                <tr><th>Deadline</th><th>Type</th><th>Done date</th></tr>
+            {% for col2 in project_todos %}
+                {% if col[0] == col2[0] %}
+                    <tr>
+                        <td> {{ col2[3].strftime("%d.%m.%Y") }} </td>
+                        <td> {{ col2[4] }} </td>
+                        <td> {% if col2[6] %} <span class="done">{{ col2[6].strftime("%d.%m.%Y") }}</span> {% else %} <span class="open">Open</span> {% endif %}</td>
+                    </tr>
+
+                {% endif %}
+            {% endfor %}
+        </table>
+
+            {% else %}
+            <p>No projects!</p>
+        {% endfor %}
+
+
+    {% else %}
+    <p><div class="buttonlike"><a href="/">LOGIN</a></div> to see Status!</p>
+
+    {% endif %}
+
+
+{% endblock %}

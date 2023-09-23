@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %}User account{% endblock %}
+{% block topic %}User account{% endblock %}
+{% block content %}
+
+    {% if session.user_id %}
+        <!--TODO Parempi olisi hakea käyttäjänimi kannasta kuin sessiosta-->
+        <p>Logged in as: {{ session.username }} 
+        <div class="buttonlike"><a href="/logout">Logout</a></div></p>
+        
+    {% else %}
+        {% if error_message %}
+            <p class="error">{{ error_message }} </p>
+        {% endif %}
+        <form action="/login" method="POST">
+            Username <input type="text" name="username"><br>
+            Password <input type="password" name="password"><br>
+            <input type="submit" class="login" value="LOGIN">
+        </form>
+        <p><div class="buttonlike"><a href="/register">Create</a></div> new user account</p>
+    {% endif %}
+
+
+{% endblock %}

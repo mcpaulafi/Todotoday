@@ -1,0 +1,9 @@
+CREATE TABLE users (user_id SERIAL PRIMARY KEY, username VARCHAR (255) UNIQUE NOT NULL, password VARCHAR (255), role SMALLINT, active BOOLEAN NOT NULL DEFAULT TRUE, create_date TIMESTAMP NOT NULL, lastlogin_date TIMESTAMP);
+
+CREATE TABLE projects (project_id SERIAL PRIMARY KEY, project_name VARCHAR (255) NOT NULL, created_by SMALLINT NOT NULL, create_date TIMESTAMP NOT NULL, deadline_date TIMESTAMP, visible BOOLEAN NOT NULL DEFAULT TRUE, FOREIGN KEY(created_by) REFERENCES users(user_id) ON DELETE CASCADE);
+
+CREATE TABLE project_users (project_id SMALLINT NOT NULL, user_id SMALLINT NOT NULL, FOREIGN KEY(project_id) REFERENCES projects(project_id) ON DELETE CASCADE, FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE);
+
+CREATE TABLE todo_types (type_id SERIAL PRIMARY KEY, type_name VARCHAR (255) NOT NULL, visible BOOLEAN NOT NULL DEFAULT TRUE, created_by SMALLINT, FOREIGN KEY (created_by) REFERENCES users(user_id) ON DELETE CASCADE);
+
+CREATE TABLE todos (todo_id SERIAL PRIMARY KEY, project_id SMALLINT NOT NULL, assigned_id SMALLINT, type_id SMALLINT, todo_description VARCHAR (255) NOT NULL, created_by SMALLINT, create_date TIMESTAMP NOT NULL, deadline_date DATE DEFAULT NULL, done_date TIMESTAMP DEFAULT NULL, visible BOOLEAN NOT NULL DEFAULT TRUE, FOREIGN KEY(project_id) REFERENCES projects(project_id) ON DELETE CASCADE); 

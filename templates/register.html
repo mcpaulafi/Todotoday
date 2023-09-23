@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %} Register new user {% endblock %}
+{% block topic %} Register new user {% endblock %}
+{% block content %}
+
+    {% if session.user_id %}
+        <p>Logged in as: {{ session.user_id }} 
+        <div class="buttonlike"><a href="/logout">Logout</a></div> before creating a new user account.</p>
+        
+    {% else %}
+        {%if error_message %}
+            <p class="error">{{ error_message }} </p>
+        {% endif %}
+        <form action="/register" method="POST">
+            Username <input type="text" name="username_new" value="{{ username_post }}"><br>
+            Password <input type="password" name="password_new"><br>
+            Password again <input type="password" name="password2_new"><br>
+            <input type="submit" class="login" value="CREATE">
+        </form>
+
+    {% endif %}
+
+
+{% endblock %}

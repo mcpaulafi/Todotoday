@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+{% block title %} ToDo list {% endblock %}
+{% block topic %} ToDo list {% endblock %}
+{% block content %}
+
+<!--TODO: miten tehdä taulukon määrittely vain kerran, eikä jokaiselle väliotsikolle erikseen-->
+
+    {% if session.user_id %}
+        <p>Logged in as: {{ session.username }}
+        {% if error_message %}
+            <p class="error">{{ error_message }} </p>
+        {% endif %}
+            <h2>Today {{ today }}</h2>
+         <table>
+            <tr><th>Deadline</th><th>Project</th><th>Type</th><th>Description</th><th>Done</th></tr>
+            {% for col in todos_all %}
+                {% if col[0].strftime("%d.%m.%Y") == today %}
+                <tr>
+                <td> {{ col[0].strftime("%d.%m.%Y") }} </td>
+                <td> {{ col[1] }} </td>
+                <td>{{ col[2] }}</td>
+                <td>{{ col[3] }} </td>
+                <td> 
+                     {% if col[4]  %}
+                        Done at {{ col[4].strftime("%d.%m.%Y") }} 
+                     {% else %} 
+                        <form action="/todolist" method="POST">
+                        <input type="hidden" name="id" value="{{ col[5] }}">
+                        <input type="submit" class="done" value="DONE">
+                        </form>
+
+                    {% endif %}
+                </td>
+                </tr>
+                {% endif %}
+            {% else %}
+                <tr><td colspan='5'>No todos today!</td></tr>
+            {% endfor %}
+            </table>
+
+        <h2>Tomorrow</h2>
+        <table>
+            <tr><th>Deadline</th><th>Project</th><th>Type</th><th>Description</th><th>Done</th></tr>
+            {% for col in todos_all %}
+                {% if col[0].strftime("%d.%m.%Y") == tomorrow %}
+                <tr>
+                <td> {{ col[0].strftime("%d.%m.%Y") }} </td>
+                <td>{{ col[1] }} </td>
+                <td>{{ col[2] }}</td>
+                <td>{{ col[3] }} </td>
+                <td>                      
+                    {% if col[4]  %}
+                        Done at {{ col[4].strftime("%d.%m.%Y") }} 
+                    {% else %} 
+                        <form action="/todolist" method="POST">
+                        <input type="hidden" name="id" value="{{ col[5] }}">
+                        <input type="submit" class="done" value="DONE">
+                        </form>
+
+                    {% endif %}
+                </td>
+                </tr>
+                {% endif %}
+            {% else %}
+                <tr><td colspan='5'>No todos tomorrow!</td></tr>
+            {% endfor %}
+            </table>
+
+        <h2>All Open ToDos</h2>
+        <table>
+            <tr><th>Deadline</th><th>Project</th><th>Type</th><th>Description</th><th>Done</th></tr>
+            {% for col in todos_all %}
+                <tr>
+                <td> {{ col[0].strftime("%d.%m.%Y") }} </td>
+                <td>{{ col[1] }} </td>
+                <td>{{ col[2] }}</td>
+                <td>{{ col[3] }} </td>
+                <td>
+                    {% if col[4]  %}
+                        Done at {{ col[4].strftime("%d.%m.%Y") }} 
+                    {% else %} 
+                        <form action="/todolist" method="POST">
+                        <input type="hidden" name="id" value="{{ col[5] }}">
+                        <input type="submit" class="done" value="DONE">
+                        </form>
+
+                    {% endif %}
+                </td>
+                </tr>
+            {% else %}
+                <tr><td colspan='5'>No late todos!</td></tr>
+            {% endfor %}
+            </table>
+
+    {% else %}
+        <p><div class="buttonlike"><a href="/">LOGIN</a></div> to see your ToDos!</p>
+    {% endif %}
+
+{% endblock %}
