@@ -36,6 +36,14 @@ body {
     font-weight: bold;
     background-color: #DDDDDD;
 }
+
+.menu-item-user {
+    float: right;
+    height: 60px;   
+    padding: 10px;
+    margin-right: 10px;
+    font-weight: normal;
+}
   
 div.menu-item p{
     color: #999999;
@@ -49,6 +57,13 @@ div.menu-item p{
     padding: 5px;
     background-color: #DDDDDD;
     border: 0px solid #FF0000;
+}
+
+.add-new {
+    width: 30vw;
+    padding: 20px;
+    background-color: #CCC;
+    margin: 5px;
 }
 
 .footer {
@@ -66,7 +81,7 @@ h2 {
     margin-top: 1em;
 }
 h3 {
-    margin-top: 2em;
+    margin-top: 0em;
 }
 
 .error {

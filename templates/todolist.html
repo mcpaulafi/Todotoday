@@ -6,7 +6,6 @@
 <!--TODO: miten tehdä taulukon määrittely vain kerran, eikä jokaiselle väliotsikolle erikseen-->
 
     {% if session.user_id %}
-        <p>Logged in as: {{ session.username }}
         {% if error_message %}
             <p class="error">{{ error_message }} </p>
         {% endif %}

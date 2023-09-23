@@ -70,15 +70,8 @@ def todolist():
 			list1 = todos.get_list('all')
 			return render_template("todolist.html", error_message=f"Unable mark a ToDo as done. {todo_id}",  todos_all=list1, today=today, tomorrow=tomorrow)
 
-#PROJECT STATUS 
-@app.route("/status") 
-def status():
-	list = todos.get_projects()
-	list2 = todos.get_project_todos()
-	return render_template("status.html", project_todos=list2, projects=list)
 
-
-#MANAGING Projects, todos and types
+#MANAGING Projects, todos 
 @app.route("/manage", methods=["GET", "POST"]) 
 def manage():
 	list = todos.get_projects()
@@ -91,36 +84,6 @@ def manage():
 
 	if request.method == "POST":
 		type = request.form["form_type"]
-
-#ADD TYPE
-		if type == "add_type":
-			#TODO tarkista, että käyttäjällä on oikeus tehdä päivitys
-			#TODO tarkista, että samaa nimeä ei jo ole
-
-			type_name = request.form["type_name"]
-			if len(type_name) < 3 or len(type_name) >= 254:
-				return render_template("manage.html", error_message=f"Type name must be between 3-254 characters.", types=list3, project_todos=list2, projects=list)
-			if todos.add_type(type_name):
-				list = todos.get_projects()
-				list2 = todos.get_project_todos()
-				list3 = todos.get_types()
-				return render_template("manage.html", error_message=f"New type added: {type_name}.", types=list3, project_todos=list2, projects=list)
-			else:
-				return render_template("manage.html", error_message=f"Unable to add new type.", types=list3, project_todos=list2, projects=list)
-
-#DELETE TYPE
-		if type == "delete_type":
-			#TODO tarkista, että käyttäjällä on oikeus tehdä päivitys
-			#TODO tarkista, että id löytyy 
-
-			type_id = request.form["type_id"]
-			if todos.delete_type(type_id):
-				list = todos.get_projects()
-				list2 = todos.get_project_todos()
-				list3 = todos.get_types()
-				return render_template("manage.html", error_message=f"Type deleted.", types=list3, project_todos=list2, projects=list)
-			else:
-				return render_template("manage.html", error_message=f"Unable to delete a type.", types=list3, project_todos=list2, projects=list)
 
 #ADD PROJECT
 		if type == "add_project":
@@ -174,4 +137,49 @@ def manage():
 
 
 		return render_template("manage.html", error_message=f"No actions done.", types=list3, project_todos=list2, projects=list)
+
+#MANAGING types
+@app.route("/types", methods=["GET", "POST"]) 
+def types():
+	list3 = todos.get_types()
+
+
+	if request.method == "GET":
+		return render_template("types.html", types=list3)
+
+	if request.method == "POST":
+		type = request.form["form_type"]
+
+#ADD TYPE
+		if type == "add_type":
+			#TODO tarkista, että käyttäjällä on oikeus tehdä päivitys
+			#TODO tarkista, että samaa nimeä ei jo ole
+
+			type_name = request.form["type_name"]
+			if len(type_name) < 3 or len(type_name) >= 254:
+				return render_template("types.html", error_message=f"Type name must be between 3-254 characters.", types=list3)
+			if todos.add_type(type_name):
+				list = todos.get_projects()
+				list2 = todos.get_project_todos()
+				list3 = todos.get_types()
+				return render_template("types.html", error_message=f"New type added: {type_name}.", types=list3)
+			else:
+				return render_template("types.html", error_message=f"Unable to add new type.", types=list3)
+
+#DELETE TYPE
+		if type == "delete_type":
+			#TODO tarkista, että käyttäjällä on oikeus tehdä päivitys
+			#TODO tarkista, että id löytyy 
+
+			type_id = request.form["type_id"]
+			if todos.delete_type(type_id):
+				list = todos.get_projects()
+				list2 = todos.get_project_todos()
+				list3 = todos.get_types()
+				return render_template("types.html", error_message=f"Type deleted.", types=list3)
+			else:
+				return render_template("types.html", error_message=f"Unable to delete a type.", types=list3)
+
+
+		return render_template("types.html", error_message=f"No actions done.", types=list3)
 

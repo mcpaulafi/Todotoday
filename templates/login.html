@@ -4,8 +4,7 @@
 {% block content %}
 
     {% if session.user_id %}
-        <!--TODO Parempi olisi hakea käyttäjänimi kannasta kuin sessiosta-->
-        <p>Logged in as: {{ session.username }} 
+        <p>Logged in as: {{ session.username }} </p>
         <div class="buttonlike"><a href="/logout">Logout</a></div></p>
         
     {% else %}

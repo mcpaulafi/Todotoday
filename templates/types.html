@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block title %}Manage types{% endblock %}
+{% block topic %}Manage types{% endblock %}
+{% block content %}
+
+    {% if session.user_id %}
+        {% if error_message %}
+            <p class="error">{{ error_message }} </p>
+        {% endif %}
+
+        <!--TYPES-->
+
+            <!--ADD TYPE-->
+        <div class="add-new">
+        <form action="/types" method="POST">
+            <input type="hidden" name="form_type" value="add_type">
+            Add new type name: <input type="input" name="type_name">
+            <input type="submit" class="done" value="CREATE">
+        </form>
+        </div><br/>
+        
+        <!--TYPE LIST-->
+        <table><tr><th>Name</th><th>Delete</th></tr>
+        {% for col in types %}
+            <tr><td>{{ col[1] }}</td><td> 
+                <form action="/types" method="POST">
+                    <input type="hidden" name="form_type" value="delete_type">
+                    <input type="hidden" name="type_id" value="{{ col[0] }}">
+                    <input type="submit" class="delete" value="DELETE">
+                </form>
+            </td></tr>
+        {% else %}
+            <tr><td colspan="2">No types yet</td></tr>
+
+        {% endfor %}
+        </table>
+
+
+    {% else %}
+    <p><div class="buttonlike"><a href="/">LOGIN</a></div> to manage types!</p>
+
+    {% endif %}
+
+
+{% endblock %}
