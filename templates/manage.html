@@ -8,12 +8,13 @@
             <p class="error">{{ error_message }} </p>
         {% endif %}
 
-        <!--NEW PROJECT--><!--Todo: add deadline date-->
+        <!--NEW PROJECT-->
         <div class="add-new">
             <h3>Add new project</h3>
         <form action="/manage" method="POST">
             <input type="hidden" name="form_type" value="add_project">
-            Add new project name: <input type="input" name="project_name">
+            Project name: <input type="input" name="project_name"><br>
+            Deadline: <input type="input" name="project_deadline" value="dd.mm.yyyy" size="10">
             <input type="submit" class="done" value="CREATE">
         </form></div>
 
@@ -22,6 +23,7 @@
         {% for col in projects %}
             <p>&nbsp;</p>
             <h2>Project: {{ col[1] }} {{ col[2] }}/{{ col[3] }} completed</h2>
+            <p>Deadline for this project: {% if col[4] %} {{ col[4].strftime("%d.%m.%Y") }} {% else %} Not set {% endif %}</p>
         <!--ADD TODO-->
         {% if types %}
             <div class="add-new">

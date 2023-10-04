@@ -6,9 +6,6 @@ from sqlalchemy.sql import text
 from datetime import datetime, timedelta
 import users
 
-# TODO lisää visible atribuutti kaikkiin
-
-
 # ToDos
 # ##############################################################################
 
@@ -74,7 +71,7 @@ def get_projects():
     # Get projects on which user is listed
     user_id = users.user_id()
     try:
-        sql = "SELECT p1.project_id, p1.project_name, (SELECT COUNT(*) FROM todos t2 WHERE t2.done_date IS NOT NULL AND t2.visible=TRUE AND p1.project_id=t2.project_id AND t2.assigned_id=:user_id), COUNT(t1.todo_id) FROM project_users pu, projects p1  LEFT JOIN todos t1 ON p1.project_id=t1.project_id AND t1.visible=TRUE WHERE p1.project_id=pu.project_id AND pu.user_id=:user_id GROUP BY p1.project_id ORDER BY p1.project_name"
+        sql = "SELECT p1.project_id, p1.project_name, (SELECT COUNT(*) FROM todos t2 WHERE t2.done_date IS NOT NULL AND t2.visible=TRUE AND p1.project_id=t2.project_id AND t2.assigned_id=:user_id), COUNT(t1.todo_id), p1.deadline_date FROM project_users pu, projects p1  LEFT JOIN todos t1 ON p1.project_id=t1.project_id AND t1.visible=TRUE WHERE p1.project_id=pu.project_id AND pu.user_id=:user_id GROUP BY p1.project_id ORDER BY p1.project_name"
         result = db.session.execute(text(sql), {"user_id":user_id})
         return result.fetchall()
     except:
@@ -84,19 +81,18 @@ def get_project_todos():
     # Get projects on which user is listed and its ToDos there user is the assigned_user
     user_id = users.user_id()
     try:
-        sql = "SELECT p1.project_id, p1.project_name, t1.todo_id, t1.deadline_date, tt.type_name, t1.todo_description, t1.done_date FROM projects p1, project_users pu, todos t1 LEFT JOIN todo_types tt ON tt.type_id=t1.type_id WHERE p1.project_id=pu.project_id AND p1.project_id=t1.project_id AND pu.user_id=:user_id AND t1.assigned_user=:user_id ORDER BY p1.project_name, t1.deadline_date"
+        sql = "SELECT p1.project_id, p1.project_name, t1.todo_id, t1.deadline_date, tt.type_name, t1.todo_description, t1.done_date FROM projects p1, project_users pu, todos t1 LEFT JOIN todo_types tt ON tt.type_id=t1.type_id WHERE p1.project_id=pu.project_id AND p1.project_id=t1.project_id AND pu.user_id=:user_id AND t1.assigned_id=:user_id ORDER BY p1.project_name, t1.deadline_date"
         result = db.session.execute(text(sql), {"user_id":user_id, "assigned_user":user_id})
         return result.fetchall()
     except:
         return False
 
-def add_project(project_name):
-    # TODO add deadline date
-    # Add user also on project_users
+def add_project(project_name, project_deadline):
+    # User is project creator and member of project users
     created_by = users.user_id()
     try:
-        sql = "INSERT INTO projects (project_name, created_by, create_date) VALUES (:project_name, :created_by, NOW()) RETURNING project_id"
-        result = db.session.execute(text(sql), {"project_name":project_name, "created_by":created_by})
+        sql = "INSERT INTO projects (project_name, created_by, create_date, deadline_date) VALUES (:project_name, :created_by, NOW(), :deadline_date) RETURNING project_id"
+        result = db.session.execute(text(sql), {"project_name":project_name, "created_by":created_by, "deadline_date":project_deadline})
         project_id = result.fetchone()[0]
         sql2 = "INSERT INTO project_users (project_id, user_id) VALUES (:project_id, :user_id)"
         db.session.execute(text(sql2), {"project_id":project_id, "user_id":created_by})
