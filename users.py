@@ -1,9 +1,14 @@
+# Application ToDo Today is made by Paula Meuronen 2023 for Helsinki University course TKT20019
+# users.py: user login and registration
+
 from db import db
 from flask import session
 from sqlalchemy.sql import text
 from werkzeug.security import check_password_hash, generate_password_hash
 
-#LOGIN
+# Login
+# ##############################################################################
+
 def login(username, password):
     sql = "SELECT user_id, username, password FROM users WHERE username=:username"
     result = db.session.execute(text(sql), {"username":username})
@@ -19,11 +24,15 @@ def login(username, password):
         else:
             return False
 
-#LOGOUT clears all session parametres
+# Logout: clears all session parametres
+# ##############################################################################
+
 def logout():
     session.clear()
 
-#ADD NEW USER
+# Register new user
+# ##############################################################################
+
 def register(username_new, password_new):
     hash_value = generate_password_hash(password_new)
     role = 2 #basic-level default
