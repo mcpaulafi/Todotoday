@@ -48,3 +48,13 @@ def register(username_new, password_new):
 def user_id():
     return session.get("user_id", 0)
 
+# Is the new name already registered?
+# ##############################################################################
+def check_name(username):
+    sql = "SELECT username FROM users WHERE username=:username"
+    result = db.session.execute(text(sql), {"username":username})
+    user = result.fetchone()
+    if not user:
+        return True
+    else:
+        return False

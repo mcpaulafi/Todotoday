@@ -43,18 +43,26 @@ def register():
 		username = request.form["username_new"]
 		password1 = request.form["password_new"]
 		password2 = request.form["password2_new"]
+
+		#Check passwd and username requirements (very simple criteria)
 		if password1 != password2:
 			return render_template("register.html", username_post=username, error_message="Passwords were not the same.")
 		if len(password1) < 4 or len(password1) >= 254:
 			return render_template("register.html", username_post=username, error_message="Password must be between 4-254 characters.")		
 		if len(username) < 2 or len(username) >= 254:
 			return render_template("register.html", username_post=username, error_message="Username must be between 2-254 characters.")		
-		# TODO puuttuu tarkistus ettei samaa nimeä kuin jo on kannassa
-		if users.register(username, password1):
-			# After registration redirect to ToDo list
-			return redirect("/todolist") 
+
+		#Do not accept duplicate usernames
+		if users.check_name(username):
+			#Register user
+			if users.register(username, password1):
+				# After registration redirect to ToDo list
+				return redirect("/todolist") 
+			else:
+				return render_template("register.html", error_message="Unable to create new user.")
 		else:
-			return render_template("register.html", error_message="Unable to create new user.")
+			return render_template("register.html", error_message="Username is already in use.")
+
 
 # ToDo list
 ###############################################################################
