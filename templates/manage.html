@@ -24,26 +24,26 @@
             <p>&nbsp;</p>
             <h2>Project: {{ col[1] }} {{ col[2] }}/{{ col[3] }} completed</h2>
             <p>Deadline for this project: {% if col[4] %} {{ col[4].strftime("%d.%m.%Y") }} {% else %} Not set {% endif %}</p>
-        <!--ADD TODO-->
-        {% if types %}
-            <div class="add-new">
-            <form action="/manage" method="POST">
-                <input type="hidden" name="form_type" value="add_todo">
-                <h3>Add new ToDo to this project</h3> 
-                <input type="hidden" name="project_id" value="{{ col[0] }}">
-                <select name="type_id">
-                    {% for col2 in types %}
-                    <option value="{{col2[0]}}">{{ col2[1] }}
-                    {% endfor %}
-                </select>
-                Deadline: <input type="input" name="todo_deadline" value="dd.mm.yyyy" size="10"><br>
-                Description: <input type="input" name="todo_description" size="50">
-                <input type="submit" class="done" value="CREATE">
-            </form>
-            </div>
-        {% else %}
-            <p>Create a <a href="/types">Type</a> before you can add ToDos!</p>
-        {% endif%}
+            <!--ADD TODO-->
+            {% if types %}
+                <div class="add-new">
+                <form action="/manage" method="POST">
+                    <input type="hidden" name="form_type" value="add_todo">
+                    <h3>Add new ToDo to this project</h3> 
+                    <input type="hidden" name="project_id" value="{{ col[0] }}">
+                    <select name="type_id">
+                        {% for col2 in types %}
+                        <option value="{{col2[0]}}">{{ col2[1] }}
+                        {% endfor %}
+                    </select>
+                    Deadline: <input type="input" name="todo_deadline" value="dd.mm.yyyy" size="10"><br>
+                    Description: <input type="input" name="todo_description" size="50">
+                    <input type="submit" class="done" value="CREATE">
+                </form>
+                </div>
+            {% else %}
+                <p>Create a <a href="/types">Type</a> before you can add ToDos!</p>
+            {% endif%}
             <!--TODO LIST-->
             <table>
                 <tr><th>Deadline</th><th>Type</th><th>Description</th><th>Done date</th><th>Delete</th></tr>
@@ -65,21 +65,24 @@
                     </tr>                
                 {% endif %}
             {% else %}
-                    <!--TODO tämä ei tulostu, väärässä paikassa-->
+            <!--TODO tämä ei tulostu, väärässä paikassa-->
                 <tr>
                     <td colspan="4">No ToDos yet!</td>
                 </tr>
-           {% endfor %}
-        </table>
-        <p>TODO: Delete the whole project</p>
-            {% else %}
+            {% endfor %}
+            </table>
+                Delete entire project and its ToDos 
+                    <form action="/manage" method="POST">
+                    <input type="hidden" name="form_type" value="delete_project">
+                    <input type="hidden" name="project_id" value="{{ col[0] }}">
+                    <input type="submit" class="delete" value="DELETE">
+                </form>
+        {% else %}
             <p>No projects!</p>
         {% endfor %}
 
     {% else %}
     <p><div class="buttonlike"><a href="/">LOGIN</a></div> to manage your projects!</p>
-
     {% endif %}
-
 
 {% endblock %}

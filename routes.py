@@ -116,6 +116,20 @@ def manage():
 				return render_template("manage.html", error_message=f"New project added: {project_name}.", types=list3, project_todos=list2, projects=list)
 			else:
 				return render_template("manage.html", error_message=f"Unable to add new project.", types=list3, project_todos=list2, projects=list)
+# Delete Project
+# ###############################################################################
+		if type == "delete_project":
+			# TODO tarkista, että käyttäjällä on oikeus tehdä päivitys
+			# TODO tarkista, että id löytyy 
+			project_id = request.form["project_id"]
+			print(f"route project id {project_id}")
+			if todos.delete_project(project_id):
+				list = todos.get_projects()
+				list2 = todos.get_project_todos()
+				list3 = todos.get_types()
+				return render_template("manage.html", error_message=f"Project deleted.", types=list3, project_todos=list2, projects=list)
+			else:
+				return render_template("manage.html", error_message=f"Unable to delete a project.", types=list3, project_todos=list2, projects=list)
 
 # Add Todos
 # ##############################################################################

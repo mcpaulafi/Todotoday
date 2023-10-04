@@ -58,6 +58,7 @@ def mark_done(todo_id):
     user_id = users.user_id()
     try:
         sql = "UPDATE todos SET done_date=NOW() WHERE todo_id=:todo_id AND assigned_id=:user_id"
+        print(f"{sql}, todo_id:{todo_id}, assigned_id:{user_id}")
         db.session.execute(text(sql), {"todo_id":todo_id, "assigned_id":user_id})
         db.session.commit()
     except:
@@ -99,6 +100,19 @@ def add_project(project_name, project_deadline):
         db.session.commit()
     except:
         return False
+    return True
+
+def delete_project(project_id):
+    # Creator can delete
+    created_by = users.user_id()
+    try:
+        sql = "DELETE FROM projects WHERE project_id=:project_id AND created_by=:created_by"
+        db.session.execute(text(sql), {"project_id":project_id, "created_by":created_by})
+        db.session.commit()
+        print(sql)
+    except:
+        return False
+
     return True
 
 # Types
