@@ -95,10 +95,12 @@ def manage():
 	list = todos.get_projects()
 	list2 = todos.get_project_todos()
 	list3 = todos.get_types()
-
+	error = ""
+	if len(list3) == 0:
+		error = 'First create a Type on Type Management page.'
 
 	if request.method == "GET":
-		return render_template("manage.html", types=list3, project_todos=list2, projects=list)
+		return render_template("manage.html", types=list3, project_todos=list2, projects=list, error_message=error)
 
 	if request.method == "POST":
 		type = request.form["form_type"]
