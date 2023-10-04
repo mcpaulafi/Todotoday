@@ -3,7 +3,7 @@
 {% block topic %} ToDo list {% endblock %}
 {% block content %}
 
-<!--TODO: miten tehdä taulukon määrittely vain kerran, eikä jokaiselle väliotsikolle erikseen-->
+<!--KYSYMYS: miten tehdä taulukon määrittely vain kerran, eikä jokaiselle väliotsikolle erikseen-->
 
     {% if session.user_id %}
         {% if error_message %}
@@ -31,9 +31,11 @@
                     {% endif %}
                 </td>
                 </tr>
+                {% else %}
+                <tr><td colspan='5'>No todos today!</td></tr>
                 {% endif %}
             {% else %}
-                <tr><td colspan='5'>No todos today!</td></tr>
+                <tr><td colspan='5'>No late todos today!!</td></tr>
             {% endfor %}
             </table>
 
@@ -55,13 +57,14 @@
                         <input type="hidden" name="id" value="{{ col[5] }}">
                         <input type="submit" class="done" value="DONE">
                         </form>
-
                     {% endif %}
                 </td>
                 </tr>
+                {% else %}
+                <tr><td colspan='5'>No todos tomorrow!</td></tr>
                 {% endif %}
             {% else %}
-                <tr><td colspan='5'>No todos tomorrow!</td></tr>
+                <tr><td colspan='5'>No late todos tomorrow!!</td></tr>
             {% endfor %}
             </table>
 
