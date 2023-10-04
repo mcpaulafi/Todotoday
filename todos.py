@@ -57,10 +57,13 @@ def mark_done(todo_id):
     # ToDo can be marked done by assigned_user 
     user_id = users.user_id()
     try:
-        sql = "UPDATE todos SET done_date=NOW() WHERE todo_id=:todo_id AND assigned_id=:user_id"
+        sql = "UPDATE todos SET done_date=NOW() WHERE todo_id=:todo_id AND assigned_id=:assigned_id"
         print(f"{sql}, todo_id:{todo_id}, assigned_id:{user_id}")
         db.session.execute(text(sql), {"todo_id":todo_id, "assigned_id":user_id})
         db.session.commit()
+#   Use this to catch error
+#    except Exception as e:
+#        print (e)
     except:
         return False
     return True
@@ -129,12 +132,14 @@ def get_types():
     
 def add_type(type_name):
     created_by = users.user_id()
+    print("routes add type", created_by, type_name)
     try:
-        sql = "INSERT INTO todo_types (type_name, created_by) VALUES (:type_name, :created_by)"
+        sql = "INSERT INTO todo_types (type_name, created_by) VALUES (:type_name, :created_by) RETURNING type_id"
         result = db.session.execute(text(sql), {"type_name":type_name, "created_by":created_by})
         type_id = result.fetchone()[0]
+        print("type_id", type_id)
         sql2 = "INSERT INTO type_users (type_id, user_id) VALUES (:type_id, :user_id)"
-        db.session.execute(text(sql2), {"project_id":type_id, "user_id":created_by})
+        db.session.execute(text(sql2), {"type_id":type_id, "user_id":created_by})
         db.session.commit()
     except:
         return False
