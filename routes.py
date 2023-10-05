@@ -108,8 +108,8 @@ def manage():
 # Add project
 ###############################################################################
 		if type == "add_project":
-			# TODO tarkista, että käyttäjällä on oikeus tehdä päivitys
-			# TODO tarkista, että samaa nimeä ei jo ole
+			# KESKEN: tarkista, että päivämäärä ei ole menneisyydessä
+			# KESKEN: tarkista, että samaa nimeä ei jo ole
 
 			project_name = request.form["project_name"]
 			try:
@@ -144,8 +144,7 @@ def manage():
 # Add Todos
 # ##############################################################################
 		if type == "add_todo":		
-			# TODO tarkista, että käyttäjällä on oikeus tehdä päivitys
-			# TODO tarkista, päivämäärä
+			# TODO tarkista, että päivämäärä ei ole menneisyydessä
 
 			todo_description = request.form["todo_description"]
 			project_id = request.form["project_id"]
@@ -185,7 +184,6 @@ def manage():
 @app.route("/types", methods=["GET", "POST"]) 
 def types():
 	list3 = todos.get_types()
-
 
 	if request.method == "GET":
 		return render_template("types.html", types=list3)
