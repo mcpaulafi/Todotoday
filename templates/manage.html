@@ -62,21 +62,17 @@
                             </form>
         
                         </td>
-                    </tr>                
+                    </tr>
+                    <!--KESKEN: Ilmoitus, jos TODOita ei ole vielä yhtäään -->
                 {% endif %}
-            {% else %}
-            <!--TODO tämä ei tulostu, väärässä paikassa-->
-                <tr>
-                    <td colspan="4">No ToDos yet!</td>
-                </tr>
             {% endfor %}
             </table>
-                Delete entire project and its ToDos 
+                <p>Delete entire project and its ToDos 
                     <form action="/manage" method="POST">
                     <input type="hidden" name="form_type" value="delete_project">
                     <input type="hidden" name="project_id" value="{{ col[0] }}">
                     <input type="submit" class="delete" value="DELETE">
-                </form>
+                </form></p>
         {% else %}
             <p>No projects!</p>
         {% endfor %}
