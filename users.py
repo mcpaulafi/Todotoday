@@ -22,7 +22,7 @@ def login(username, password):
             # Adding login time to database
             try:
                 sql = "UPDATE users SET lastlogin_date=NOW() WHERE user_id=:user_id"
-                print(f"{sql}, user_id:{user.user_id}, date")
+#                print(f"Login, user_id:{user.user_id}, date")
                 db.session.execute(text(sql), {"user_id":user.user_id})
                 db.session.commit()
             except Exception as e:
