@@ -42,11 +42,12 @@ Tables
 6. On terminal start psql with command: psql
 7. On psql create database: CREATE DATABASE todotoday
 8. On terminal create tables to the database: psql -d todotoday < schema.sql
-9. On psql write command \dt. The database should contain tables users, projects, project_users, todo_types, type_users and todos.
-10. On terminal start the application with the command: flask run
-11. Start a browser and go to url http://127.0.0.1:5000/ (or where Flask tells the app is running).
-12. Begin using ToDo today application with registering a username. After login create some types first. Then you can create projects and add todos in them.
-13. If you want to delete the database, on psql use command: DROP DATABASE todotoday:
+9. On psql write command: \connect todotoday 
+10. On psql write command: \dt. The database should contain tables users, projects, project_users, todo_types, type_users and todos.
+11. On terminal start the application with the command: flask run
+12. Start a browser and go to url http://127.0.0.1:5000/ (or where Flask tells the app is running).
+13. Begin using "ToDo today" application with registering a username. After login create some types first. Then you can create projects and add todos in them.
+14. If you want to delete the database, on psql use command: DROP DATABASE todotoday;
 
 ## Status of the project: Development phase
 - [x] Database  
@@ -75,6 +76,7 @@ Tables
 - 5th October 2023 Third draft, functionalities done, manage projects page to be redesigned
 
 ### Future development / if there is time
+- Sort with types
 - Add multiple users on a project (noted in the database design)
 - Assigning a ToDo to another user in the project (noted in the current code)
 - Copy a project with tasks to another user 
