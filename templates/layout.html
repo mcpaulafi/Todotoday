@@ -14,10 +14,10 @@
         <div class="content_top">
          <h1>ToDo Today</h1>
             <div class="menu-container">
-                <div {% if request.path == "/" or request.path == "/register"%} class="menu-item-on"{% else %} class="menu-item"{% endif %}><a href="/">USER <br>account</a></div>
                 <div {% if request.path == "/todolist" %} class="menu-item-on"{% else %} class="menu-item"{% endif %}><a href="/todolist">TODO<br> list</a></div>
                 <div {% if request.path == "/manage" %} class="menu-item-on"{% else %} class="menu-item"{% endif %}><a href="/manage">PROJECT<br> management</a></div>
                 <div {% if request.path == "/types" %} class="menu-item-on"{% else %} class="menu-item"{% endif %}><a href="/types">TYPE<br> management</a></div>
+                <div {% if request.path == "/" or request.path == "/register"%} class="menu-item-on"{% else %} class="menu-item"{% endif %}><a href="/">USER <br>account</a></div>
                 <div class="menu-item-user">{% if session.user_id %}Logged in as: {{ session.username }} <div class="buttonlike"><a href="/logout">Logout</a></div>{% endif %} 
 
                 </div>

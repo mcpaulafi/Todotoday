@@ -51,7 +51,7 @@
                 <td>{{ col[3] }} </td>
                 <td>                      
                     {% if col[4]  %}
-                  Done at {{ col[4].strftime("%d.%m.%Y") }} 
+                        Done at {{ col[4].strftime("%d.%m.%Y") }} 
                     {% else %} 
                         <form action="/todolist" method="POST">
                         <input type="hidden" name="id" value="{{ col[5] }}">
