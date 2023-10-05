@@ -57,7 +57,7 @@ def register():
 			#Register user
 			if users.register(username, password1):
 				# After registration redirect to ToDo list
-				return redirect("/todolist") 
+				return render_template("/todolist") 
 			else:
 				return render_template("register.html", error_message="Unable to create new user.")
 		else:
@@ -75,11 +75,10 @@ def todolist():
 	if request.method == "GET":
 		return render_template("todolist.html", todos_all=list1, today=today, tomorrow=tomorrow)
 
-# Dode ToDos
+# Done ToDo
 ###############################################################################
 	if request.method == "POST":
 		todo_id = request.form["id"]
-		# TODO tarkista, että käyttäjällä on oikeus tehdä päivitys
 		if todos.mark_done(todo_id):
 			list1 = todos.get_list('all')
 			return render_template("todolist.html", error_message=f"ToDo marked as done. {todo_id}", todos_all=list1, today=today, tomorrow=tomorrow)
@@ -104,6 +103,7 @@ def manage():
 
 	if request.method == "POST":
 		type = request.form["form_type"]
+#		print("manage, form type", type)
 
 # Add project
 ###############################################################################
@@ -126,13 +126,14 @@ def manage():
 				return render_template("manage.html", error_message=f"New project added: {project_name}.", types=list3, project_todos=list2, projects=list)
 			else:
 				return render_template("manage.html", error_message=f"Unable to add new project.", types=list3, project_todos=list2, projects=list)
+
 # Delete Project
 # ###############################################################################
 		if type == "delete_project":
 			# TODO tarkista, että käyttäjällä on oikeus tehdä päivitys
 			# TODO tarkista, että id löytyy 
 			project_id = request.form["project_id"]
-			print(f"route project id {project_id}")
+#			print(f"route project id {project_id}")
 			if todos.delete_project(project_id):
 				list = todos.get_projects()
 				list2 = todos.get_project_todos()
@@ -159,13 +160,24 @@ def manage():
 				list2 = todos.get_project_todos()
 				list3 = todos.get_types()
 				return render_template("manage.html", error_message=f"Added a new ToDo.", types=list3, project_todos=list2, projects=list)
+# Done ToDo
+# ###############################################################################
+		if type == "done_todo":
+			todo_id = request.form["todo_id"]
+			if todos.mark_done(todo_id):
+				list = todos.get_projects()
+				list2 = todos.get_project_todos()
+				list3 = todos.get_types()
+				return render_template("manage.html", error_message=f"ToDo marked as done. {todo_id}", types=list3, project_todos=list2, projects=list)
+			else:
+				list = todos.get_projects()
+				list2 = todos.get_project_todos()
+				list3 = todos.get_types()
+				return render_template("manage.html", error_message=f"Unable mark a ToDo as done. {todo_id}",  types=list3, project_todos=list2, projects=list)
 
 # Delete ToDo
 # ###############################################################################
 		if type == "delete_todo":
-			# TODO tarkista, että käyttäjällä on oikeus tehdä päivitys
-			# TODO tarkista, että id löytyy 
-
 			todo_id = request.form["todo_id"]
 			if todos.delete_todo(todo_id):
 				list = todos.get_projects()
