@@ -19,6 +19,15 @@ def login(username, password):
         if check_password_hash(user.password, password):
             session["user_id"] = user.user_id
             session["username"] = user.username
+            # Adding login time to database
+            try:
+                sql = "UPDATE users SET lastlogin_date=NOW() WHERE user_id=:user_id"
+                print(f"{sql}, user_id:{user.user_id}, date")
+                db.session.execute(text(sql), {"user_id":user.user_id})
+                db.session.commit()
+            except Exception as e:
+#                print("error sql", e)
+                return False
 
             return True
         else:
