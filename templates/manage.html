@@ -53,7 +53,15 @@
                         <td> {{ col2[3].strftime("%d.%m.%Y") }} </td>
                         <td> {{ col2[4] }} </td>
                         <td>{{ col2[5] }} </td>
-                        <td> {% if col2[6] %} <span class="done">{{ col2[6].strftime("%d.%m.%Y") }}</span> {% else %} <span class="open">Open</span> {% endif %}</td>
+                        <td> {% if col2[6] %} 
+                                <span class="done">{{ col2[6].strftime("%d.%m.%Y") }}</span> 
+                            {% else %} 
+                                <form action="/manage" method="POST">
+                                    <input type="hidden" name="form_type" value="done_todo">
+                                    <input type="hidden" name="todo_id" value="{{ col2[2] }}">
+                                <input type="submit" class="done" value="DONE">
+                                </form>
+                            {% endif %}</td>
                         <td>
                             <form action="/manage" method="POST">
                                 <input type="hidden" name="form_type" value="delete_todo">

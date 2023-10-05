@@ -58,13 +58,10 @@ def mark_done(todo_id):
     user_id = users.user_id()
     try:
         sql = "UPDATE todos SET done_date=NOW() WHERE todo_id=:todo_id AND assigned_id=:assigned_id"
-        print(f"{sql}, todo_id:{todo_id}, assigned_id:{user_id}")
         db.session.execute(text(sql), {"todo_id":todo_id, "assigned_id":user_id})
         db.session.commit()
-#   Use this to catch error
-#    except Exception as e:
+    except Exception as e:
 #        print (e)
-    except:
         return False
     return True
 
@@ -112,7 +109,7 @@ def delete_project(project_id):
         sql = "DELETE FROM projects WHERE project_id=:project_id AND created_by=:created_by"
         db.session.execute(text(sql), {"project_id":project_id, "created_by":created_by})
         db.session.commit()
-        print(sql)
+#        print(sql)
     except:
         return False
 
