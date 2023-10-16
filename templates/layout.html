@@ -12,8 +12,13 @@
     <div class="parent">
 
         <div class="content_top">
-         <h1>ToDo Today</h1>
+         <h1>
+
+            <img src="{{ url_for('static', filename='checkmark_icon_100px.jpg') }}" class="logo" alt="Logo" title="LOGO is 42331765 Image by Verazinha on Freepik"> 
+        
+            ToDo Today</h1>
             <div class="menu-container">
+
                 <div {% if request.path == "/todolist" %} class="menu-item-on"{% else %} class="menu-item"{% endif %}><a href="/todolist">TODO<br> list</a></div>
                 <div {% if request.path == "/manage" %} class="menu-item-on"{% else %} class="menu-item"{% endif %}><a href="/manage">PROJECT<br> management</a></div>
                 <div {% if request.path == "/types" %} class="menu-item-on"{% else %} class="menu-item"{% endif %}><a href="/types">TYPE<br> management</a></div>
