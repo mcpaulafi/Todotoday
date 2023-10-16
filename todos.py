@@ -67,19 +67,36 @@ def mark_done(todo_id):
 
 # Projects
 # ##############################################################################
-
-def get_projects():
+def get_project_names():
     # Get projects on which user is listed
     user_id = users.user_id()
     try:
-        sql = "SELECT p1.project_id, p1.project_name, (SELECT COUNT(*) FROM todos t2 WHERE t2.done_date IS NOT NULL AND t2.visible=TRUE AND p1.project_id=t2.project_id AND t2.assigned_id=:user_id), COUNT(t1.todo_id), p1.deadline_date FROM project_users pu, projects p1  LEFT JOIN todos t1 ON p1.project_id=t1.project_id AND t1.visible=TRUE WHERE p1.project_id=pu.project_id AND pu.user_id=:user_id GROUP BY p1.project_id ORDER BY p1.project_name"
+        sql = "SELECT p1.project_id, p1.project_name FROM project_users pu, projects p1 WHERE p1.project_id=pu.project_id AND pu.user_id=:user_id ORDER BY p1.project_name"
         result = db.session.execute(text(sql), {"user_id":user_id})
         return result.fetchall()
     except:
         return False
+    
+def get_projects(project_id):
+    # Get projects on which user is listed
+    user_id = users.user_id()
+    if project_id != None:
+        try:
+            sql = "SELECT p1.project_id, p1.project_name, (SELECT COUNT(*) FROM todos t2 WHERE t2.done_date IS NOT NULL AND t2.visible=TRUE AND p1.project_id=t2.project_id AND t2.assigned_id=:user_id), COUNT(t1.todo_id), p1.deadline_date FROM project_users pu, projects p1  LEFT JOIN todos t1 ON p1.project_id=t1.project_id AND t1.visible=TRUE WHERE p1.project_id=pu.project_id AND pu.user_id=:user_id AND p1.project_id=:project_id GROUP BY p1.project_id ORDER BY p1.project_name"
+            result = db.session.execute(text(sql), {"user_id":user_id, "project_id":project_id})
+            return result.fetchall()
+        except:
+            return False
+    #KESKEN - POISTA?
+    # try:
+    #     sql = "SELECT p1.project_id, p1.project_name, (SELECT COUNT(*) FROM todos t2 WHERE t2.done_date IS NOT NULL AND t2.visible=TRUE AND p1.project_id=t2.project_id AND t2.assigned_id=:user_id), COUNT(t1.todo_id), p1.deadline_date FROM project_users pu, projects p1  LEFT JOIN todos t1 ON p1.project_id=t1.project_id AND t1.visible=TRUE WHERE p1.project_id=pu.project_id AND pu.user_id=:user_id GROUP BY p1.project_id ORDER BY p1.project_name"
+    #     result = db.session.execute(text(sql), {"user_id":user_id})
+    #     return result.fetchall()
+    # except:
+    #     return False
 
 def get_project_todos():
-    # Get projects on which user is listed and its ToDos there user is the assigned_user
+    # Get project on which user is listed and its ToDos where user is the assigned_user
     user_id = users.user_id()
     try:
         sql = "SELECT p1.project_id, p1.project_name, t1.todo_id, t1.deadline_date, tt.type_name, t1.todo_description, t1.done_date FROM projects p1, project_users pu, todos t1 LEFT JOIN todo_types tt ON tt.type_id=t1.type_id WHERE p1.project_id=pu.project_id AND p1.project_id=t1.project_id AND pu.user_id=:user_id AND t1.assigned_id=:user_id ORDER BY p1.project_name, t1.deadline_date"
@@ -129,12 +146,11 @@ def get_types():
     
 def add_type(type_name):
     created_by = users.user_id()
-    print("routes add type", created_by, type_name)
+#    print("routes add type", created_by, type_name)
     try:
         sql = "INSERT INTO todo_types (type_name, created_by) VALUES (:type_name, :created_by) RETURNING type_id"
         result = db.session.execute(text(sql), {"type_name":type_name, "created_by":created_by})
         type_id = result.fetchone()[0]
-        print("type_id", type_id)
         sql2 = "INSERT INTO type_users (type_id, user_id) VALUES (:type_id, :user_id)"
         db.session.execute(text(sql2), {"type_id":type_id, "user_id":created_by})
         db.session.commit()

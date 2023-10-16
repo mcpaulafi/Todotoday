@@ -2,9 +2,10 @@
 # routes.py: pages and user input
  
 from app import app
-from flask import redirect, render_template, request, session
+from flask import redirect, render_template, request, session, abort
 from datetime import datetime, timedelta
 import todos, users
+
 
 
 # index is same as login
@@ -81,29 +82,31 @@ def todolist():
 		todo_id = request.form["id"]
 		if todos.mark_done(todo_id):
 			list1 = todos.get_list('all')
-			return render_template("todolist.html", error_message=f"ToDo marked as done. {todo_id}", todos_all=list1, today=today, tomorrow=tomorrow)
+			return render_template("todolist.html", error_message=f"ToDo marked as done.", todos_all=list1, today=today, tomorrow=tomorrow)
 		else:
 			list1 = todos.get_list('all')
-			return render_template("todolist.html", error_message=f"Unable mark a ToDo as done. {todo_id}",  todos_all=list1, today=today, tomorrow=tomorrow)
+			return render_template("todolist.html", error_message=f"Unable mark a ToDo as done.",  todos_all=list1, today=today, tomorrow=tomorrow)
 
 
 # Managing Projects and ToDos 
 ###############################################################################
 @app.route("/manage", methods=["GET", "POST"]) 
 def manage():
-	list = todos.get_projects()
+#	print(f"MANAGE ")
+
+	list = todos.get_projects(None)
 	list2 = todos.get_project_todos()
 	list3 = todos.get_types()
+	list4 = todos.get_project_names()
 	error = ""
 	if len(list3) == 0:
 		error = 'First create a Type on Type Management page.'
 
 	if request.method == "GET":
-		return render_template("manage.html", types=list3, project_todos=list2, projects=list, error_message=error)
+		return render_template("manage.html", types=list3, project_todos=list2, projects=list, project_names=list4, error_message=error)
 
 	if request.method == "POST":
 		type = request.form["form_type"]
-#		print("manage, form type", type)
 
 # Add project
 ###############################################################################
@@ -120,12 +123,28 @@ def manage():
 			if len(project_name) < 3 or len(project_name) >= 254:
 				return render_template("manage.html", error_message=f"Project name must be between 3-254 characters.", types=list3, project_todos=list2, projects=list)
 			if todos.add_project(project_name, project_deadline):
-				list = todos.get_projects()
+				#KESKEN = HAE LUOTU ID
+				project_id = 1
+				list = todos.get_projects(None)
 				list2 = todos.get_project_todos()
 				list3 = todos.get_types()
-				return render_template("manage.html", error_message=f"New project added: {project_name}.", types=list3, project_todos=list2, projects=list)
+				list4 = todos.get_project_names()
+				return render_template("manage.html", error_message=f"New project added: {project_name}.", types=list3, project_todos=list2, projects=list, project_names=list4)
 			else:
-				return render_template("manage.html", error_message=f"Unable to add new project.", types=list3, project_todos=list2, projects=list)
+				return render_template("manage.html", error_message=f"Unable to add new project.", types=list3, project_todos=list2, projects=list, project_names=list4)
+# Get project
+###############################################################################
+		if type == "get_project":
+			project_id = request.form["project_id"]
+			try:			
+				list = todos.get_projects(project_id)
+				list2 = todos.get_project_todos()
+				list3 = todos.get_types()
+				list4 = todos.get_project_names()
+				return render_template("manage.html", error_message=f"Project selected for editing.", types=list3, project_todos=list2, projects=list, project_names=list4)
+			except Exception as e:
+#				print("Errori", e)
+				return render_template("manage.html", error_message=f"Unable to get the project.", types=list3, project_todos=list2, projects=list, project_names=list4)
 
 # Delete Project
 # ###############################################################################
@@ -135,12 +154,16 @@ def manage():
 			project_id = request.form["project_id"]
 #			print(f"route project id {project_id}")
 			if todos.delete_project(project_id):
-				list = todos.get_projects()
+				list = todos.get_projects(None)
 				list2 = todos.get_project_todos()
 				list3 = todos.get_types()
-				return render_template("manage.html", error_message=f"Project deleted.", types=list3, project_todos=list2, projects=list)
+				list4 = todos.get_project_names()
+				return render_template("manage.html", error_message=f"Project deleted.", types=list3, project_todos=list2, projects=list, project_names=list4)
 			else:
-				return render_template("manage.html", error_message=f"Unable to delete a project.", types=list3, project_todos=list2, projects=list)
+				list = todos.get_projects(None)
+				list2 = todos.get_project_todos()
+				list3 = todos.get_types()
+				return render_template("manage.html", error_message=f"Unable to delete a project.", types=list3, project_todos=list2, projects=list, project_names=list4)
 
 # Add Todos
 # ##############################################################################
@@ -156,40 +179,45 @@ def manage():
 				return render_template("manage.html", error_message=f"Todo not added. Check date format in deadline.", types=list3, project_todos=list2, projects=list)
 
 			if todos.add_todo(todo_description, project_id, type_id, todo_deadline):
-				list = todos.get_projects()
+				list = todos.get_projects(project_id)
 				list2 = todos.get_project_todos()
 				list3 = todos.get_types()
-				return render_template("manage.html", error_message=f"Added a new ToDo.", types=list3, project_todos=list2, projects=list)
+				list4 = todos.get_project_names()
+				return render_template("manage.html", error_message=f"Added a new ToDo.", types=list3, project_todos=list2, projects=list, project_names=list4)
 # Done ToDo
 # ###############################################################################
 		if type == "done_todo":
 			todo_id = request.form["todo_id"]
+			project_id = request.form["project_id"]
 			if todos.mark_done(todo_id):
-				list = todos.get_projects()
+				list = todos.get_projects(project_id)
 				list2 = todos.get_project_todos()
 				list3 = todos.get_types()
-				return render_template("manage.html", error_message=f"ToDo marked as done. {todo_id}", types=list3, project_todos=list2, projects=list)
+				list4 = todos.get_project_names()
+				return render_template("manage.html", error_message=f"ToDo marked as done.", types=list3, project_todos=list2, projects=list, project_names=list4)
 			else:
-				list = todos.get_projects()
+				list = todos.get_projects(project_id)
 				list2 = todos.get_project_todos()
 				list3 = todos.get_types()
-				return render_template("manage.html", error_message=f"Unable mark a ToDo as done. {todo_id}",  types=list3, project_todos=list2, projects=list)
+				list4 = todos.get_project_names()
+				return render_template("manage.html", error_message=f"Unable mark a ToDo as done.",  types=list3, project_todos=list2, projects=list, project_names=list4)
 
 # Delete ToDo
 # ###############################################################################
 		if type == "delete_todo":
 			todo_id = request.form["todo_id"]
+			project_id = request.form["project_id"]
 			if todos.delete_todo(todo_id):
-				list = todos.get_projects()
+				list = todos.get_projects(project_id)
 				list2 = todos.get_project_todos()
 				list3 = todos.get_types()
-				return render_template("manage.html", error_message=f"ToDo deleted.", types=list3, project_todos=list2, projects=list)
+				list4 = todos.get_project_names()
+				return render_template("manage.html", error_message=f"ToDo deleted.", types=list3, project_todos=list2, projects=list, project_names=list4)
 			else:
-				return render_template("manage.html", error_message=f"Unable to delete a ToDo.", types=list3, project_todos=list2, projects=list)
+				return render_template("manage.html", error_message=f"Unable to delete a ToDo.", types=list3, project_todos=list2, projects=list, project_names=list4)
 
-
-
-		return render_template("manage.html", error_message=f"No actions done.", types=list3, project_todos=list2, projects=list)
+		#If no project is selected
+		return render_template("manage.html", error_message=f"No actions done.", types=list3, project_todos=list2, projects=list, project_name=list4)
 
 # Managing types
 # ##############################################################################
@@ -206,8 +234,11 @@ def types():
 # Add type
 # ##############################################################################
 		if type == "add_type":
-			#TODO tarkista, että käyttäjällä on oikeus tehdä päivitys
 			#TODO tarkista, että samaa nimeä ei jo ole
+
+			#CSRF vulnerability check
+			if session["csrf_token"] != request.form["csrf_token"]:
+				abort(403)
 
 			type_name = request.form["type_name"]
 			if len(type_name) < 3 or len(type_name) >= 254:
@@ -226,8 +257,6 @@ def types():
 
 			type_id = request.form["type_id"]
 			if todos.delete_type(type_id):
-				list = todos.get_projects()
-				list2 = todos.get_project_todos()
 				list3 = todos.get_types()
 				return render_template("types.html", error_message=f"Type deleted.", types=list3)
 			else:
