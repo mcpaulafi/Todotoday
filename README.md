@@ -37,7 +37,7 @@ Tables
     - DATABASE_URL="postgresql:///todotoday"
     - SECRET_KEY='key'
         - _key = a random 16-character string enclosed within ‘’-marks_
-4. On terminal start venv: source venv/bin/activate
+4. On terminal start venv (create a virtual environment): source venv/bin/activate 
 5. On terminal install dependencies: pip install -r requirements.txt
 6. On terminal start psql with command: psql
 7. On psql create database: CREATE DATABASE todotoday
@@ -49,7 +49,7 @@ Tables
 13. Begin using "ToDo today" application with registering a username. After login create some types first. Then you can create projects and add todos in them.
 14. If you want to delete the database, on psql use command: DROP DATABASE todotoday;
 
-## Status of the project: Development phase
+## Status of the project: Development phase 
 - [x] Database  
 - [x] Login and logout with the account
 - [x] User can add projects, todos and types
@@ -57,23 +57,26 @@ Tables
 - [x] User can delete projects, todos and types
 - [x] Page: ToDo list: "ToDos for Today", "ToDos for Tomorrow", "All Open ToDos" 
 - [x] Page: Manage projects, major usability issues:
-    - [x] View project status: done/total ToDos per project
-    - [ ] after POST-action, can error messages be shown next to where it occured?
-    - [ ] re-design layout: selection of projects, show only one project data at the time
-    - [ ] Add Done-button to here also 
+    - [x] after POST-action, can error messages be shown next to where it occured?
+    - [x] re-design layout: selection of projects, show only one project data at the time
+    - [x] Add Done-button to here also 
 - [x] Page: Manage types (add/delete)
 - [x] Layout, minor issues:
-    - [ ] Page tab: User login, change to the right, so ToDo list is first tab on right
+    - [x] Page tab: User login, change to the right, so ToDo list is first tab on right
     - [ ] Set more precisely location of Submit-buttons 
 - [ ] Evaluations on posted data from forms, some to be added:
-    - [ ] decline dates in the past
+    - [x] decline dates in the past
     - [ ] more issues commented on the code
+- [x] CSRF vulnerability check
+- [ ] Error handling clean up
+- [ ] From issue report, find&fix: ToDo listan tomorrow-osion "No todos tomorrow!"-teksti kasautuu oudosti 
 
 ## Development log
 - This project is made on "TKT20019 Tietokannat ja web-ohjelmointi" course in the University of Helsinki
 - 6th Sep 2023 First draft of the plan
 - 22nd Sep 2023 Second draft, most functionalities available
 - 5th October 2023 Third draft, functionalities done, manage projects page to be redesigned
+- 16th Oct 2023: finalising
 
 ### Future development / if there is time
 - Sort with types
