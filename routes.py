@@ -190,7 +190,6 @@ def manage():
 # Add Todos
 # ##############################################################################
 		if type == "add_todo":		
-			# TODO tarkista, että päivämäärä ei ole menneisyydessä
 
 			#CSRF vulnerability check
 			if session["csrf_token"] != request.form["csrf_token"]:
@@ -203,6 +202,11 @@ def manage():
 				todo_deadline = datetime.strptime(request.form["todo_deadline"], '%d.%m.%Y')
 			except:		
 				return render_template("manage.html", error_message=f"Todo not added. Check date format in deadline.", types=list3, project_todos=list2, projects=list)
+
+			#Someday fix this to minute level
+			if todo_deadline < (datetime.now()-timedelta(1)):
+				list = todos.get_projects(project_id)
+				return render_template("manage.html", error_message=f"ToDo not added. Deadline date is in the past.", todo_description=todo_description, types=list3, project_todos=list2, projects=list, project_names=list4)
 
 			if todos.add_todo(todo_description, project_id, type_id, todo_deadline):
 				list = todos.get_projects(project_id)
