@@ -13,6 +13,7 @@
             <div class="add-new-left">
                 <h3>Select a project</h3>
                 <form action="/manage" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                     <input type="hidden" name="form_type" value="get_project">
                     <select name="project_id">
                 {% for col in project_names %}
@@ -28,6 +29,7 @@
             <div class="add-new-right">
                 <h3>Add new project</h3>
             <form action="/manage" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                 <input type="hidden" name="form_type" value="add_project">
                 Project name: <input type="input" name="project_name"><br>
                 Deadline: <input type="input" name="project_deadline" value="dd.mm.yyyy" size="10">
@@ -51,6 +53,7 @@
                 {% if types %}
                     <div class="add-new">
                     <form action="/manage" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                         <input type="hidden" name="form_type" value="add_todo">
                         <h3>Add new ToDo to this project</h3> 
                         <input type="hidden" name="project_id" value="{{ col[0] }}">
@@ -80,6 +83,7 @@
                                     <span class="done">{{ col2[6].strftime("%d.%m.%Y") }}</span> 
                                 {% else %} 
                                     <form action="/manage" method="POST">
+                                        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                                         <input type="hidden" name="form_type" value="done_todo">
                                         <input type="hidden" name="project_id" value="{{ col[0] }}">
                                         <input type="hidden" name="todo_id" value="{{ col2[2] }}">
@@ -88,6 +92,7 @@
                                 {% endif %}</td>
                             <td>
                                 <form action="/manage" method="POST">
+                                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                                     <input type="hidden" name="form_type" value="delete_todo">
                                     <input type="hidden" name="project_id" value="{{ col[0] }}">
                                     <input type="hidden" name="todo_id" value="{{ col2[2] }}">
@@ -103,6 +108,7 @@
                 </table>
                     <p>Delete entire project and its ToDos 
                         <form action="/manage" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                         <input type="hidden" name="form_type" value="delete_project">
                         <input type="hidden" name="project_id" value="{{ col[0] }}">
                         <input type="submit" class="delete" value="DELETE">
