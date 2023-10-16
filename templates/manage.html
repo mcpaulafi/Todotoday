@@ -6,32 +6,35 @@
     {% if session.user_id %}
 
 
-        <!--NEW PROJECT-->
-        <div class="add-new">
-            <h3>Add new project</h3>
-        <form action="/manage" method="POST">
-            <input type="hidden" name="form_type" value="add_project">
-            Project name: <input type="input" name="project_name"><br>
-            Deadline: <input type="input" name="project_deadline" value="dd.mm.yyyy" size="10">
-            <input type="submit" class="done" value="CREATE">
-        </form></div>
+        <div class="add-new-container">
 
-        {% if project_names %}
-        <!--PROJECT LIST-->
-        <div class="add-new">
-            <h3>Select a project</h3>
+            <!--PROJECT LIST-->
+            {% if project_names %}
+            <div class="add-new-left">
+                <h3>Select a project</h3>
+                <form action="/manage" method="POST">
+                    <input type="hidden" name="form_type" value="get_project">
+                    <select name="project_id">
+                {% for col in project_names %}
+                        <option value="{{ col[0] }}">{{ col[1] }}</option>
+                {% endfor %}
+                    </select>
+                    <input type="submit" class="done" value="SELECT">
+                </form>
+            </div>
+            {% endif %}
+
+            <!--NEW PROJECT-->
+            <div class="add-new-right">
+                <h3>Add new project</h3>
             <form action="/manage" method="POST">
-                <input type="hidden" name="form_type" value="get_project">
-                <select name="project_id">
-            {% for col in project_names %}
-                    <option value="{{ col[0] }}">{{ col[1] }}</option>
-            {% endfor %}
-                </select>
-                <input type="submit" class="done" value="SELECT">
-            </form>
-        </div>
-        {% endif %}
+                <input type="hidden" name="form_type" value="add_project">
+                Project name: <input type="input" name="project_name"><br>
+                Deadline: <input type="input" name="project_deadline" value="dd.mm.yyyy" size="10">
+                <input type="submit" class="done" value="CREATE">
+            </form></div>
 
+        </div>
         <!--PLACE FOR ERROR MESSAGE-->
         {% if error_message %}
             <p class="error">{{ error_message }} </p>
