@@ -31,7 +31,7 @@
             <form action="/manage" method="POST">
                 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                 <input type="hidden" name="form_type" value="add_project">
-                Project name: <input type="input" name="project_name"><br>
+                Project name: <input type="input" name="project_name" value="{{ project_name }}"><br>
                 Deadline: <input type="input" name="project_deadline" value="dd.mm.yyyy" size="10">
                 <input type="submit" class="done" value="CREATE">
             </form></div>
@@ -62,8 +62,8 @@
                             <option value="{{col2[0]}}">{{ col2[1] }}
                             {% endfor %}
                         </select>
-                        Deadline: <input type="input" name="todo_deadline" value="dd.mm.yyyy" size="10"><br>
-                        Description: <input type="input" name="todo_description" size="50">
+                        Deadline: <input type="input" name="todo_deadline" value="{% if col[4] %} {{ col[4].strftime('%d.%m.%Y') }} {% else %} dd.mm.yyyy {% endif %}" size="10"><br>
+                        Description: <input type="input" name="todo_description" size="50" value="{{ todo_description }}">
                         <input type="submit" class="done" value="CREATE">
                     </form>
                     </div>
