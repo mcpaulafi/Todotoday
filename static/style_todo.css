@@ -167,6 +167,12 @@ input[type=text], input[type=password] {
     margin: 10px 10px 0px 0px;
   }
 
+select {
+    background-color: #FFF;
+    padding: 5px;
+    border: solid 1px #000;
+}
+
 /* LINKIT */
 a:link {
     text-decoration: none;
