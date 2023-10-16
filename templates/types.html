@@ -4,9 +4,7 @@
 {% block content %}
 
     {% if session.user_id %}
-        {% if error_message %}
-            <p class="error">{{ error_message }} </p>
-        {% endif %}
+
 
         <!--TYPES-->
 
@@ -20,6 +18,11 @@
         </form>
         </div><br/>
         
+        <!--PLACE FOR ERROR MESSAGE-->
+        {% if error_message %}
+            <p class="error">{{ error_message }} </p>
+        {% endif %}
+
         <!--TYPE LIST-->
         <table><tr><th>Name</th><th>Delete</th></tr>
         {% for col in types %}
