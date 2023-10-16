@@ -67,6 +67,17 @@ def mark_done(todo_id):
 
 # Projects
 # ##############################################################################
+def get_latest_project_id():
+    # Get project  which user created lates
+    user_id = users.user_id()
+    try:
+        sql = "SELECT p1.project_id FROM projects p1 WHERE p1.created_by=:user_id ORDER BY p1.create_date DESC LIMIT 1"
+        result = db.session.execute(text(sql), {"user_id":user_id})
+        return result.fetchone()[0]
+    except Exception as e:
+#        print("errori", e)
+        return False
+
 def get_project_names():
     # Get projects on which user is listed
     user_id = users.user_id()
@@ -87,13 +98,7 @@ def get_projects(project_id):
             return result.fetchall()
         except:
             return False
-    #KESKEN - POISTA?
-    # try:
-    #     sql = "SELECT p1.project_id, p1.project_name, (SELECT COUNT(*) FROM todos t2 WHERE t2.done_date IS NOT NULL AND t2.visible=TRUE AND p1.project_id=t2.project_id AND t2.assigned_id=:user_id), COUNT(t1.todo_id), p1.deadline_date FROM project_users pu, projects p1  LEFT JOIN todos t1 ON p1.project_id=t1.project_id AND t1.visible=TRUE WHERE p1.project_id=pu.project_id AND pu.user_id=:user_id GROUP BY p1.project_id ORDER BY p1.project_name"
-    #     result = db.session.execute(text(sql), {"user_id":user_id})
-    #     return result.fetchall()
-    # except:
-    #     return False
+
 
 def get_project_todos():
     # Get project on which user is listed and its ToDos where user is the assigned_user

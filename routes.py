@@ -123,9 +123,10 @@ def manage():
 			if len(project_name) < 3 or len(project_name) >= 254:
 				return render_template("manage.html", error_message=f"Project name must be between 3-254 characters.", types=list3, project_todos=list2, projects=list)
 			if todos.add_project(project_name, project_deadline):
-				#KESKEN = HAE LUOTU ID
-				project_id = 1
-				list = todos.get_projects(None)
+				# Latest project that user has created 
+				project_id = todos.get_latest_project_id()
+				print("viimeisin projekti", project_id)
+				list = todos.get_projects(project_id)
 				list2 = todos.get_project_todos()
 				list3 = todos.get_types()
 				list4 = todos.get_project_names()
