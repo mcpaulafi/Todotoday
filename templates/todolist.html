@@ -3,8 +3,6 @@
 {% block topic %} ToDo list {% endblock %}
 {% block content %}
 
-<!--KYSYMYS: miten tehdä taulukon määrittely vain kerran, eikä jokaiselle väliotsikolle erikseen-->
-
     {% if session.user_id %}
         {% if error_message %}
             <p class="error">{{ error_message }} </p>
@@ -24,6 +22,7 @@
                         Done at {{ col[4].strftime("%d.%m.%Y") }} 
                      {% else %} 
                         <form action="/todolist" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                         <input type="hidden" name="id" value="{{ col[5] }}">
                         <input type="submit" class="done" value="DONE">
                         </form>
@@ -54,6 +53,7 @@
                         Done at {{ col[4].strftime("%d.%m.%Y") }} 
                     {% else %} 
                         <form action="/todolist" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                         <input type="hidden" name="id" value="{{ col[5] }}">
                         <input type="submit" class="done" value="DONE">
                         </form>
@@ -82,6 +82,7 @@
                         Done at {{ col[4].strftime("%d.%m.%Y") }} 
                     {% else %} 
                         <form action="/todolist" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                         <input type="hidden" name="id" value="{{ col[5] }}">
                         <input type="submit" class="done" value="DONE">
                         </form>
