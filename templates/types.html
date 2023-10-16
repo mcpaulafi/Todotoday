@@ -15,6 +15,7 @@
         <form action="/types" method="POST">
             <input type="hidden" name="form_type" value="add_type">
             Add new type name: <input type="input" name="type_name">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
             <input type="submit" class="done" value="CREATE">
         </form>
         </div><br/>
@@ -26,6 +27,7 @@
                 <form action="/types" method="POST">
                     <input type="hidden" name="form_type" value="delete_type">
                     <input type="hidden" name="type_id" value="{{ col[0] }}">
+                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                     <input type="submit" class="delete" value="DELETE">
                 </form>
             </td></tr>

@@ -5,6 +5,7 @@ from db import db
 from flask import session
 from sqlalchemy.sql import text
 from werkzeug.security import check_password_hash, generate_password_hash
+import secrets
 
 # Login
 # ##############################################################################
@@ -19,6 +20,8 @@ def login(username, password):
         if check_password_hash(user.password, password):
             session["user_id"] = user.user_id
             session["username"] = user.username
+            session["csrf_token"] = secrets.token_hex(16)
+
             # Adding login time to database
             try:
                 sql = "UPDATE users SET lastlogin_date=NOW() WHERE user_id=:user_id"
