@@ -62,7 +62,7 @@
                             <option value="{{col2[0]}}">{{ col2[1] }}
                             {% endfor %}
                         </select>
-                        Deadline: <input type="input" name="todo_deadline" value="{% if col[4] %} {{ col[4].strftime('%d.%m.%Y') }} {% else %} dd.mm.yyyy {% endif %}" size="10"><br>
+                        Deadline: <input type="input" name="todo_deadline" value="{% if col[4] %}{{col[4].strftime('%d.%m.%Y')}}{% else %}dd.mm.yyyy{% endif %}" size="10"><br>
                         Description: <input type="input" name="todo_description" size="50" value="{{ todo_description }}">
                         <input type="submit" class="done" value="CREATE">
                     </form>

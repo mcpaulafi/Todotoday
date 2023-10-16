@@ -198,14 +198,22 @@ def manage():
 			todo_description = request.form["todo_description"]
 			project_id = request.form["project_id"]
 			type_id = request.form["type_id"]
+			print("TODODL: ", request.form["todo_deadline"], datetime.strptime(request.form["todo_deadline"], '%d.%m.%Y'))
 			try:
 				todo_deadline = datetime.strptime(request.form["todo_deadline"], '%d.%m.%Y')
 			except:		
-				return render_template("manage.html", error_message=f"Todo not added. Check date format in deadline.", types=list3, project_todos=list2, projects=list)
+				list = todos.get_projects(project_id)
+				list2 = todos.get_project_todos()
+				list3 = todos.get_types()
+				list4 = todos.get_project_names()
+				return render_template("manage.html", error_message=f"Todo not added. Check date format in deadline.", todo_description=todo_description, types=list3, project_todos=list2, projects=list, project_names=list4)
 
 			#Someday fix this to minute level
 			if todo_deadline < (datetime.now()-timedelta(1)):
 				list = todos.get_projects(project_id)
+				list2 = todos.get_project_todos()
+				list3 = todos.get_types()
+				list4 = todos.get_project_names()
 				return render_template("manage.html", error_message=f"ToDo not added. Deadline date is in the past.", todo_description=todo_description, types=list3, project_todos=list2, projects=list, project_names=list4)
 
 			if todos.add_todo(todo_description, project_id, type_id, todo_deadline):
