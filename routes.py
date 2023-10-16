@@ -6,8 +6,6 @@ from flask import redirect, render_template, request, session, abort
 from datetime import datetime, timedelta
 import todos, users
 
-
-
 # index is same as login
 # ##############################################################################
 @app.route("/")
@@ -127,14 +125,19 @@ def manage():
 			try:
 				project_deadline = request.form["project_deadline"]
 			except:		
-				return render_template("manage.html", error_message=f"Project not added. Check date format in deadline.", types=list3, project_todos=list2, projects=list)
-
+				return render_template("manage.html", error_message=f"Project not added. Check date format in deadline.", types=list3, project_todos=list2, projects=list, project_names=list4)
+			
+			#Someday fix this to minute level
+			if datetime.strptime(project_deadline, "%d.%m.%Y") < (datetime.now()-timedelta(1)):
+				return render_template("manage.html", error_message=f"Project not added. Deadline date is in the past.", project_name=project_name, types=list3, project_todos=list2, projects=list, project_names=list4)
+			
 			if len(project_name) < 3 or len(project_name) >= 254:
-				return render_template("manage.html", error_message=f"Project name must be between 3-254 characters.", types=list3, project_todos=list2, projects=list)
+				return render_template("manage.html", error_message=f"Project name must be between 3-254 characters.", types=list3, project_todos=list2, projects=list, project_names=list4)
+			
 			if todos.add_project(project_name, project_deadline):
 				# Latest project that user has created 
 				project_id = todos.get_latest_project_id()
-				print("viimeisin projekti", project_id)
+
 				list = todos.get_projects(project_id)
 				list2 = todos.get_project_todos()
 				list3 = todos.get_types()
