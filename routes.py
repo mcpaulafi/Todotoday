@@ -79,6 +79,11 @@ def todolist():
 # Done ToDo
 ###############################################################################
 	if request.method == "POST":
+
+		#CSRF vulnerability check
+		if session["csrf_token"] != request.form["csrf_token"]:
+			abort(403)
+
 		todo_id = request.form["id"]
 		if todos.mark_done(todo_id):
 			list1 = todos.get_list('all')
@@ -114,6 +119,10 @@ def manage():
 			# KESKEN: tarkista, että päivämäärä ei ole menneisyydessä
 			# KESKEN: tarkista, että samaa nimeä ei jo ole
 
+			#CSRF vulnerability check
+			if session["csrf_token"] != request.form["csrf_token"]:
+				abort(403)
+
 			project_name = request.form["project_name"]
 			try:
 				project_deadline = request.form["project_deadline"]
@@ -133,10 +142,16 @@ def manage():
 				return render_template("manage.html", error_message=f"New project added: {project_name}.", types=list3, project_todos=list2, projects=list, project_names=list4)
 			else:
 				return render_template("manage.html", error_message=f"Unable to add new project.", types=list3, project_todos=list2, projects=list, project_names=list4)
-# Get project
+
+# Select project
 ###############################################################################
 		if type == "get_project":
 			project_id = request.form["project_id"]
+
+			#CSRF vulnerability check
+			if session["csrf_token"] != request.form["csrf_token"]:
+				abort(403)
+
 			try:			
 				list = todos.get_projects(project_id)
 				list2 = todos.get_project_todos()
@@ -150,8 +165,11 @@ def manage():
 # Delete Project
 # ###############################################################################
 		if type == "delete_project":
-			# TODO tarkista, että käyttäjällä on oikeus tehdä päivitys
-			# TODO tarkista, että id löytyy 
+
+			#CSRF vulnerability check
+			if session["csrf_token"] != request.form["csrf_token"]:
+				abort(403)
+
 			project_id = request.form["project_id"]
 #			print(f"route project id {project_id}")
 			if todos.delete_project(project_id):
@@ -171,6 +189,10 @@ def manage():
 		if type == "add_todo":		
 			# TODO tarkista, että päivämäärä ei ole menneisyydessä
 
+			#CSRF vulnerability check
+			if session["csrf_token"] != request.form["csrf_token"]:
+				abort(403)
+
 			todo_description = request.form["todo_description"]
 			project_id = request.form["project_id"]
 			type_id = request.form["type_id"]
@@ -184,10 +206,15 @@ def manage():
 				list2 = todos.get_project_todos()
 				list3 = todos.get_types()
 				list4 = todos.get_project_names()
-				return render_template("manage.html", error_message=f"Added a new ToDo.", types=list3, project_todos=list2, projects=list, project_names=list4)
+				return render_template("manage.html", error_message=f"Added a new ToDo {todo_description}", types=list3, project_todos=list2, projects=list, project_names=list4)
 # Done ToDo
 # ###############################################################################
 		if type == "done_todo":
+
+			#CSRF vulnerability check
+			if session["csrf_token"] != request.form["csrf_token"]:
+				abort(403)
+
 			todo_id = request.form["todo_id"]
 			project_id = request.form["project_id"]
 			if todos.mark_done(todo_id):
@@ -206,6 +233,11 @@ def manage():
 # Delete ToDo
 # ###############################################################################
 		if type == "delete_todo":
+
+			#CSRF vulnerability check
+			if session["csrf_token"] != request.form["csrf_token"]:
+				abort(403)
+
 			todo_id = request.form["todo_id"]
 			project_id = request.form["project_id"]
 			if todos.delete_todo(todo_id):
@@ -253,8 +285,10 @@ def types():
 # Delete type
 # ##############################################################################
 		if type == "delete_type":
-			#TODO tarkista, että käyttäjällä on oikeus tehdä päivitys
-			#TODO tarkista, että id löytyy 
+
+			#CSRF vulnerability check
+			if session["csrf_token"] != request.form["csrf_token"]:
+				abort(403)
 
 			type_id = request.form["type_id"]
 			if todos.delete_type(type_id):
