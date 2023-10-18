@@ -83,3 +83,4 @@ Tables
 - Add multiple users on a project (noted in the database design)
 - Assigning a ToDo to another user in the project (noted in the current code)
 - Copy a project with tasks to another user 
+- Admin role
