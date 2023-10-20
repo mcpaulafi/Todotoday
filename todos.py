@@ -8,7 +8,7 @@ from db import db
 import users
 
 # ToDos
-def get_list(time):
+def get_list(time1):
     """Query of ToDos assigned_to user (atm same as creator)"""
     user_id = users.user_id()
     today = datetime.now()
@@ -16,9 +16,9 @@ def get_list(time):
 
     get_time = today.strftime("%Y-%m-%d")
 
-    if time=="today":
+    if time1=="today":
         get_time = today.strftime("%Y-%m-%d")
-    if time=="tomorrow":
+    if time1=="tomorrow":
         get_time = tomorrow.strftime("%Y-%m-%d")
 
     # Select for today or tomorrow
@@ -28,12 +28,13 @@ def get_list(time):
     T.visible=TRUE AND T.deadline_date=:deadline AND T.done_date IS NULL"
     result = db.session.execute(text(sql), {"user_id":user_id, "deadline":get_time})
 
-    if time=="all":
+    if time1=="all":
         sql = "SELECT T.deadline_date, P.project_name, TT.type_name, T.todo_description, \
         T.done_date, T.todo_id FROM todos T LEFT JOIN projects P ON T.project_id=P.project_id \
             LEFT JOIN todo_types TT ON T.type_id=TT.type_id  WHERE T.assigned_id=:user_id AND \
             T.done_date IS NULL AND T.visible=TRUE ORDER BY T.deadline_date"
         result = db.session.execute(text(sql), {"user_id":user_id})
+
     return result.fetchall()
 
 def add_todo(todo_description, project_id, type_id, deadline_date):

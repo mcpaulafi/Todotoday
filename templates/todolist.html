@@ -7,11 +7,10 @@
         {% if error_message %}
             <p class="error">{{ error_message }} </p>
         {% endif %}
-            <h2>Today {{ today }}</h2>
+            <h3>Today</h3>
          <table>
             <tr><th>Deadline</th><th>Project</th><th>Type</th><th>Description</th><th>Done</th></tr>
-            {% for col in todos_all %}
-                {% if col[0].strftime("%d.%m.%Y") == today %}
+            {% for col in today %}
                 <tr>
                 <td> {{ col[0].strftime("%d.%m.%Y") }} </td>
                 <td> {{ col[1] }} </td>
@@ -30,19 +29,18 @@
                     {% endif %}
                 </td>
                 </tr>
-                {% else %}
-                <!--tr><td colspan='5'>No todos today!</td></tr-->
-                {% endif %}
-            {% else %}
-                <tr><td colspan='5'>No late todos today!!</td></tr>
             {% endfor %}
+            {% if today %}
+            {% else %}
+            <!--TODO LIST EMPTY-->
+            <tr><td colspan='5'>No open ToDos for today!</td></tr>
+            {% endif %}
             </table>
 
-        <h2>Tomorrow</h2>
+        <h3>Tomorrow</h3>
         <table>
             <tr><th>Deadline</th><th>Project</th><th>Type</th><th>Description</th><th>Done</th></tr>
-            {% for col in todos_all %}
-                {% if col[0].strftime("%d.%m.%Y") == tomorrow %}
+            {% for col in tomorrow %}
                 <tr>
                 <td> {{ col[0].strftime("%d.%m.%Y") }} </td>
                 <td>{{ col[1] }} </td>
@@ -60,15 +58,16 @@
                     {% endif %}
                 </td>
                 </tr>
-                {% else %}
-                <!--tr><td colspan='5'>No todos tomorrow!</td></tr-->
-                {% endif %}
-            {% else %}
-                <tr><td colspan='5'>No late todos tomorrow!!</td></tr>
-            {% endfor %}
+             {% endfor %}
+             {% if tomorrow %}
+             {% else %}
+             <!--TODO LIST EMPTY-->
+             <tr><td colspan='5'>No open ToDos for tomorrow!</td></tr>
+             {% endif %}
+ 
             </table>
 
-        <h2>All Open ToDos</h2>
+        <h3>All Open ToDos</h3>
         <table>
             <tr><th>Deadline</th><th>Project</th><th>Type</th><th>Description</th><th>Done</th></tr>
             {% for col in todos_all %}
@@ -90,9 +89,12 @@
                     {% endif %}
                 </td>
                 </tr>
-            {% else %}
-                <tr><td colspan='5'>No late todos!</td></tr>
             {% endfor %}
+            {% if todos_all %}
+            {% else %}
+            <!--TODO LIST EMPTY-->
+            <tr><td colspan='5'>No ToDos open!</td></tr>
+            {% endif %}
             </table>
 
     {% else %}

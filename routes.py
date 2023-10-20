@@ -65,15 +65,15 @@ def register():
         if len(error_msg)>0:
             return render_template("register.html", error_message=error_msg)
     # GET
-    print("Pointer: GET register")
+    # print("Pointer: GET register")
     return render_template("register.html")
 
 @app.route("/todolist", methods=["GET", "POST"])
 def todolist():
     """ToDo list"""
     list1 = todos.get_list('all')
-    today = datetime.now().strftime("%d.%m.%Y")
-    tomorrow = ( datetime.now() + timedelta(1)).strftime("%d.%m.%Y")
+    list2 = todos.get_list('today')
+    list3 = todos.get_list('tomorrow')
 
 # Done ToDo
     if request.method == "POST":
@@ -85,14 +85,16 @@ def todolist():
         todo_id = request.form["id"]
         if todos.mark_done(todo_id):
             list1 = todos.get_list('all')
-            return render_template("todolist.html", error_message="ToDo marked as done.", \
-                                   todos_all=list1, today=today, tomorrow=tomorrow)
-        list1 = todos.get_list('all')
-        return render_template("todolist.html", error_message="Unable mark a ToDo as done.", \
-                               todos_all=list1, today=today, tomorrow=tomorrow)
-    # GET
-    return render_template("todolist.html", todos_all=list1, today=today, tomorrow=tomorrow)
+            list2 = todos.get_list('today')
+            list3 = todos.get_list('tomorrow')
 
+            return render_template("todolist.html", error_message="ToDo marked as done.", \
+                                   todos_all=list1, today=list2, tomorrow=list3)
+        #Error
+        return render_template("todolist.html", error_message="Unable mark a ToDo as done.", \
+                               todos_all=list1, today=list2, tomorrow=list3)
+    # GET
+    return render_template("todolist.html", todos_all=list1, today=list2, tomorrow=list3)
 
 @app.route("/manage", methods=["GET", "POST"])
 def manage():
@@ -289,7 +291,6 @@ def manage():
         project_todos=list2, projects=list1, project_name=list4)
 
     #GET
-    print("Status: GET")
     return render_template("manage.html", types=list3, project_todos=list2, \
     projects=list1, project_names=list4, error_message=error_msg)
 
