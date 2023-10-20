@@ -175,6 +175,17 @@ def delete_project(project_id):
 
 # Types
 
+def check_type_name(type_name):
+    """Get list of types"""
+    user_id = users.user_id()
+    sql = "SELECT t1.type_id FROM todo_types t1 WHERE t1.visible = TRUE \
+        AND t1.created_by=:user_id AND t1.type_name=:type_name"
+    result = db.session.execute(text(sql), {"user_id":user_id, "type_name":type_name})
+    type_name_sql = result.fetchone()
+    if type_name_sql:
+        return True
+    return False
+
 def get_types():
     """Get list of types"""
     user_id = users.user_id()

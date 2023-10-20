@@ -150,7 +150,7 @@ def manage():
                 return render_template("manage.html", \
                 error_message="Project name is already in use.", \
                 types=list3, project_todos=list2, projects=list1, project_names=list4, project_name=project_name)
-            
+
             if todos.add_project(project_name, project_deadline):
                 # Latest project that user has created
                 project_id = todos.get_latest_project_id()
@@ -323,8 +323,11 @@ def types():
 
 # Add type
         if type1 == "add_type":
-            #TODO tarkista, että samaa nimeä ei jo ole
             type_name = request.form["type_name"]
+
+            if todos.check_type_name(type_name):
+                return render_template("types.html", \
+                error_message="Type name is already in use.", types=list3)
 
             if len(type_name) < 3 or len(type_name) >= 254:
                 return render_template("types.html", \
