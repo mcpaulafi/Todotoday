@@ -287,6 +287,7 @@ def manage():
         project_todos=list2, projects=list1, project_name=list4)
 
     #GET
+    print("GET")
     return render_template("manage.html", types=list3, project_todos=list2, \
     projects=list1, project_names=list4, error_message=error_msg)
 

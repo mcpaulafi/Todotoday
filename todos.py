@@ -115,7 +115,8 @@ def get_projects(project_id):
             return result.fetchall()
         except Exception:
             return False
-    return True
+    # If no project_id
+    return 0
 
 def get_project_todos():
     """Get project on which user is listed and its ToDos where user is the assigned_user"""
