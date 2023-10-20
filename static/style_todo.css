@@ -92,13 +92,19 @@ div.menu-item p{
 
 /* FONTS */
 
+
 h2 {
-    margin-top: 1em;
+    font-size: 1.8em;
+    margin-top: 1.3em;
 }
 h3 {
-    margin-top: 0em;
+    font-size: 1.5em;
+    margin-top: 1.3em;
 }
-
+h4 {
+    font-size: 1.2em;
+    margin: 0.3em 0em 0.2em;
+}
 .error {
     color: #FF0000;
 }

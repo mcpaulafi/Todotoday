@@ -11,7 +11,7 @@
             <!--PROJECT LIST-->
             {% if project_names %}
             <div class="add-new-left">
-                <h3>Select a project</h3>
+                <h4>Select a project</h4>
                 <form action="/manage" method="POST">
                     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                     <input type="hidden" name="form_type" value="get_project">
@@ -27,7 +27,7 @@
 
             <!--NEW PROJECT-->
             <div class="add-new-right">
-                <h3>Add new project</h3>
+                <h4>Add new project</h4>
             <form action="/manage" method="POST">
                 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                 <input type="hidden" name="form_type" value="add_project">
@@ -46,7 +46,7 @@
         {% if projects %}
             {% for col in projects %}
                 <p>&nbsp;</p>
-                <h2>Project: {{ col[1] }}</h2>
+                <h3>Project: {{ col[1] }}</h3>
                 <p><strong>Status</strong> {{ col[2] }}/{{ col[3] }} ToDos completed</p>
                 <p><strong>Deadline</strong> {% if col[4] %} {{ col[4].strftime("%d.%m.%Y") }} {% else %} Not set {% endif %}</p>
                 <!--ADD TODO-->
@@ -55,7 +55,7 @@
                     <form action="/manage" method="POST">
                         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                         <input type="hidden" name="form_type" value="add_todo">
-                        <h3>Add new ToDo to this project</h3> 
+                        <h4>Add new ToDo to this project</h4> 
                         <input type="hidden" name="project_id" value="{{ col[0] }}">
                         <select name="type_id">
                             {% for col2 in types %}
@@ -107,13 +107,14 @@
                 {% endfor %}
                 </table>
                 <div class="add-new">
+                    <h4>Delete project</h4>
+                    All ToDos are deleted too.
                         <form action="/manage" method="POST">
                         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                         <input type="hidden" name="form_type" value="delete_project">
                         <input type="hidden" name="project_id" value="{{ col[0] }}">
                         <input type="submit" class="delete" value="DELETE">
-                        entire project and its ToDos 
-                    </form></div>
+                    </form> </div>
             {% endfor %}
         {% else %}
                 {% if project_names %}
