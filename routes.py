@@ -113,7 +113,6 @@ def manage():
 
 # Add project
         if type1 == "add_project":
-            # TODO: tarkista, että samaa nimeä ei jo ole
 
             #CSRF vulnerability check
             if session["csrf_token"] != request.form["csrf_token"]:
@@ -125,20 +124,33 @@ def manage():
             except Exception:
                 return render_template("manage.html", \
                 error_message="Project not added. Check date format in deadline.", \
-                    types=list3, project_todos=list2, projects=list1, project_names=list4)
+                    types=list3, project_todos=list2, projects=list1, project_names=list4, project_name=project_name)
 
             #Someday fix this to minute level
-            if datetime.strptime(project_deadline, "%d.%m.%Y") < (datetime.now()-timedelta(1)):
-                return render_template("manage.html", \
-                error_message="Project not added. Deadline date is in the past.", \
-                project_name=project_name, types=list3, project_todos=list2, projects=list1, \
-                project_names=list4)
+            try:
+                project_deadline = datetime.strptime(request.form["project_deadline"], '%d.%m.%Y')
+            except Exception:
+                    return render_template("manage.html", \
+                    error_message="Project not added. Check the deadline date.", \
+                    project_name=project_name, types=list3, project_todos=list2, projects=list1, \
+                    project_names=list4)
+
+            if project_deadline < (datetime.now()-timedelta(1)):
+                    return render_template("manage.html", \
+                    error_message="Project not added. Deadline date is in the past.", \
+                    project_name=project_name, types=list3, project_todos=list2, projects=list1, \
+                    project_names=list4)
 
             if len(project_name) < 3 or len(project_name) >= 254:
                 return render_template("manage.html", \
                 error_message="Project name must be between 3-254 characters.", \
-                types=list3, project_todos=list2, projects=list1, project_names=list4)
+                types=list3, project_todos=list2, projects=list1, project_names=list4, project_name=project_name)
 
+            if todos.check_project_name(project_name):
+                return render_template("manage.html", \
+                error_message="Project name is already in use.", \
+                types=list3, project_todos=list2, projects=list1, project_names=list4, project_name=project_name)
+            
             if todos.add_project(project_name, project_deadline):
                 # Latest project that user has created
                 project_id = todos.get_latest_project_id()
@@ -153,7 +165,7 @@ def manage():
 
             return render_template("manage.html", \
             error_message="Unable to add new project.", \
-            types=list3, project_todos=list2, projects=list1, project_names=list4)
+            types=list3, project_todos=list2, projects=list1, project_names=list4, project_name=project_name)
 
 # Select project
         if type1 == "get_project":

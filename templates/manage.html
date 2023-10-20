@@ -28,13 +28,14 @@
             <!--NEW PROJECT-->
             <div class="add-new-right">
                 <h4>Add new project</h4>
-            <form action="/manage" method="POST">
-                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-                <input type="hidden" name="form_type" value="add_project">
-                Project name: <input type="text" name="project_name" value="{{ project_name }}"><br>
-                Deadline: <input type="text" name="project_deadline" value="dd.mm.yyyy" size="10">
-                <input type="submit" class="done" value="CREATE">
-            </form></div>
+                <form action="/manage" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                    <input type="hidden" name="form_type" value="add_project">
+                    Project name: <input type="text" name="project_name" value="{{ project_name }}"><br>
+                    Deadline: <input type="text" name="project_deadline" value="dd.mm.yyyy" size="10">
+                    <input type="submit" class="done" value="CREATE">
+                </form>
+            </div>
 
         </div>
         <!--PLACE FOR ERROR MESSAGE-->

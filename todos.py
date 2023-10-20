@@ -77,6 +77,17 @@ def mark_done(todo_id):
     return True
 
 # Projects
+
+def check_project_name(project_name):
+    """Is the new name already registered?"""
+    created_by = users.user_id()
+    sql = "SELECT project_name FROM projects WHERE project_name=:project_name AND created_by=:created_by AND visible=TRUE"
+    result = db.session.execute(text(sql), {"project_name":project_name, "created_by":created_by})
+    project_name_sql = result.fetchone()
+    if project_name_sql:
+        return True
+    return False
+
 def get_latest_project_id():
     """Get the project which user created latest"""
     user_id = users.user_id()
