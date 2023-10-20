@@ -57,13 +57,15 @@ def register():
             #Register user
             if users.register(username, password1):
                 # After registration redirect to ToDo list
-                return render_template("/todolist")
+                print("After registration redirect")
+                return render_template("todolist.html")
             error_msg="Unable to create new user."
         else:
             error_msg="Username is already in use."
         if len(error_msg)>0:
             return render_template("register.html", error_message=error_msg)
-    #GET
+    # GET
+    print("Pointer: GET register")
     return render_template("register.html")
 
 @app.route("/todolist", methods=["GET", "POST"])
@@ -144,7 +146,7 @@ def manage():
                 list3 = todos.get_types()
                 list4 = todos.get_project_names()
                 return render_template("manage.html", \
-                error_message="New project added: {project_name}.", \
+                error_message=f"New project added: {project_name}.", \
                 types=list3, project_todos=list2, projects=list1, project_names=list4)
 
             return render_template("manage.html", \
@@ -287,7 +289,7 @@ def manage():
         project_todos=list2, projects=list1, project_name=list4)
 
     #GET
-    print("GET")
+    print("Status: GET")
     return render_template("manage.html", types=list3, project_todos=list2, \
     projects=list1, project_names=list4, error_message=error_msg)
 
@@ -318,7 +320,7 @@ def types():
             if todos.add_type(type_name):
                 list3 = todos.get_types()
                 return render_template("types.html", \
-                error_message="New type added: {type_name}.", types=list3)
+                error_message=f"New type added: {type_name}.", types=list3)
             return render_template("types.html", \
             error_message="Unable to add new type.", types=list3)
 
