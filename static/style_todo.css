@@ -16,20 +16,19 @@ body {
     padding: 0px;
     text-align: center;
     background-color: #CCCCCC;
-    border: 0px solid blue;
 }
 
 .menu-item {
     float: left;
-    height: 60px;   
-    padding: 10px;
+    height: 50px;   
+    padding: 10px 10px 0px;
     margin-right: 10px;
 }
 
 .menu-item-on {
     float: left;
-    height: 60px;   
-    padding: 10px;
+    height: 50px;
+    padding: 10px 10px 0px;
     margin-right: 10px;
     font-weight: bold;
     background-color: #DDDDDD;
@@ -37,10 +36,12 @@ body {
 
 .menu-item-user {
     float: right;
-    height: 60px;   
-    padding: 10px;
-    margin-right: 10px;
+    height: 45px;   
+    padding: 20px 10px 0px;
+    margin-left: 10px;
     font-weight: normal;
+    display: flex; 
+    justify-content: space-around;
 }
   
 div.menu-item p{
@@ -168,6 +169,17 @@ input[type=submit], input[type=reset] {
     margin: 2px 0px 2px 10px;
   }
 
+  input[type=submit].done-right {
+    background-color: #009933;
+    border: black;
+    color: white;
+    border-radius: 4px;
+    padding: 6px;
+    text-decoration: none;
+    margin: 10px 0px 2px 10px;
+    float: right;
+  }
+
   input[type=submit]:hover,   input[type=submit].login:hover,   input[type=submit].delete:hover {
     background-color: #000;
   }
@@ -178,7 +190,7 @@ input[type=text], input[type=password] {
     color: black;
     padding: 5px;
     text-decoration: none;
-    margin: 10px 10px 0px 0px;
+    margin: 10px 0px 10px 0px;
   }
 
 select {
@@ -190,46 +202,8 @@ select {
 /* LINK */
 a:link {
     text-decoration: none;
-    color: navy;
+    color: #009;
 }
-
-.menu-item a:link {
-    text-decoration: none;
-    color: black;
-}
-
-
-.buttonlike a:link {
-    background-color: #009933;;
-    border: black;
-    color: white;
-    border-radius: 4px;
-    padding: 6px;
-    font-size: 0.8em;
-    text-decoration: none;
-    text-transform: uppercase; 
-    margin: 2px 10px 5px 10px;
-    float: left;
-  }
-
-  
-a:visited {
-    text-decoration: none;
-      color: black;
-    }
-
-.buttonlike a:visited {
-        background-color:  #009933;
-        border: black;
-        color: white;
-        border-radius: 4px;
-        padding: 6px;
-        font-size: 0.8em;
-        text-decoration: none;
-        text-transform: uppercase; 
-        margin: 2px 10px 5px 10px;
-        float: left;
-    }
 
       
 a:hover {
@@ -239,6 +213,89 @@ a:hover {
 a:active {
     text-decoration: underline;
 }	
+
+a:visited {
+    text-decoration: none;
+      color: black;
+    }
+
+.menu-item a:link {
+    text-decoration: none;
+    color: black;
+}
+
+
+.buttonlike a:link {
+    background-color: #009933;
+    color: #FFF;
+    border-radius: 4px;
+    padding: 6px;
+    font-size: 0.8em;
+    text-decoration: none;
+    text-transform: uppercase; 
+    margin: 10px;
+  }
+
+.buttonlike-left a:link {
+    background-color: #009933;
+    color: #FFF;
+    border-radius: 4px;
+    padding: 6px;
+    font-size: 0.8em;
+    text-decoration: none;
+    text-transform: uppercase; 
+    margin: 0px 10px 0px;
+    float: left; 
+}
+  
+
+.buttonlike a:visited {
+    background-color: #009933;
+    color: #FFF;
+    border-radius: 4px;
+    padding: 6px;
+    font-size: 0.8em;
+    text-decoration: none;
+    text-transform: uppercase; 
+    margin: 10px;
+    }
+
+.buttonlike-left a:visited {
+        background-color: #009933;
+        color: #FFF;
+        border-radius: 4px;
+        padding: 6px;
+        font-size: 0.8em;
+        text-decoration: none;
+        text-transform: uppercase; 
+        margin: 10px;
+        float: left; 
+        }
+
+.buttonlike a:hover {
+    background-color: #000;
+    color: #FFF;
+    border-radius: 4px;
+    padding: 6px;
+    font-size: 0.8em;
+    text-decoration: none;
+    text-transform: uppercase; 
+    margin: 10px;
+    }
+        
+.buttonlike-left a:hover {
+    background-color: #000;
+    color: #FFF;
+    border-radius: 4px;
+    padding: 6px;
+    font-size: 0.8em;
+    text-decoration: none;
+    text-transform: uppercase; 
+    margin: 10px;
+    float: left; 
+    }
+
+
 
 /* IMAGE */
 img.logo {

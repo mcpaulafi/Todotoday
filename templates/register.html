@@ -4,8 +4,8 @@
 {% block content %}
 
     {% if session.user_id %}
-        <p>Logged in as: {{ session.user_id }} 
-        <div class="buttonlike"><a href="/logout">Logout</a></div> before creating a new user account.</p>
+        <p>Logged in as: {{ session.username }} 
+        <div class="buttonlike-left"><a href="/logout">Logout</a></div> before creating a new user account.</p>
         
     {% else %}
         {%if error_message %}
