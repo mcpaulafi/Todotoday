@@ -24,9 +24,11 @@
         {% endif %}
 
         <!--TYPE LIST-->
-        <table><tr><th>Name</th><th>Delete</th></tr>
+        <table><tr><th>Name</th><th>ToDos marked</th><th>Delete</th></tr>
         {% for col in types %}
-            <tr><td>{{ col[1] }}</td><td> 
+            <tr><td>{{ col[1] }}</td>
+                <td>{{ col[2] }}</td> 
+                <td> 
                 <form action="/types" method="POST">
                     <input type="hidden" name="form_type" value="delete_type">
                     <input type="hidden" name="type_id" value="{{ col[0] }}">
@@ -38,7 +40,7 @@
             <tr><td colspan="2">No types yet</td></tr>
 
         {% endfor %}
-        </table>
+        </table> <p>Note: Deleting a type does not delete ToDos which are marked with it.</p>
 
 
     {% else %}

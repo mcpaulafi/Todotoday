@@ -190,7 +190,9 @@ def get_types():
     """Get list of types"""
     user_id = users.user_id()
     try:
-        sql = "SELECT t1.type_id, t1.type_name FROM todo_types t1 WHERE t1.visible = TRUE \
+        sql = "SELECT t1.type_id, t1.type_name,  \
+        (SELECT COUNT(*) FROM todos t2 WHERE t2.type_id=t1.type_id) \
+        FROM todo_types t1 WHERE t1.visible = TRUE \
             AND t1.created_by=:user_id ORDER BY t1.type_name"
         result = db.session.execute(text(sql), {"user_id":user_id})
         return result.fetchall()
