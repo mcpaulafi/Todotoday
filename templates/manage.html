@@ -48,8 +48,8 @@
             {% for col in projects %}
                 <p>&nbsp;</p>
                 <h3>Project: {{ col[1] }}</h3>
-                <p><strong>Status</strong> {{ col[2] }}/{{ col[3] }} ToDos completed</p>
-                <p><strong>Deadline</strong> {% if col[4] %} {{ col[4].strftime("%d.%m.%Y") }} {% else %} Not set {% endif %}</p>
+                <p><strong>Status</strong> {{ col[2] }}/{{ col[3] }} ToDos completed.
+                <strong>Deadline</strong> {% if col[4] %} {{ col[4].strftime("%d.%m.%Y") }} {% else %} Not set {% endif %}</p>
                 <!--ADD TODO-->
                 {% if types %}
                     <div class="add-new">
