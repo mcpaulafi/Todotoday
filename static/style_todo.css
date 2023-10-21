@@ -242,17 +242,6 @@ a:visited {
     margin: 10px;
   }
 
-.buttonlike-left a:link {
-    background-color: #009933;
-    color: #FFF;
-    border-radius: 4px;
-    padding: 6px;
-    font-size: 0.8em;
-    text-decoration: none;
-    text-transform: uppercase; 
-    margin: 0px 10px 0px;
-    float: left; 
-}
   
 
 .buttonlike a:visited {
@@ -266,18 +255,6 @@ a:visited {
     margin: 10px;
     }
 
-.buttonlike-left a:visited {
-        background-color: #009933;
-        color: #FFF;
-        border-radius: 4px;
-        padding: 6px;
-        font-size: 0.8em;
-        text-decoration: none;
-        text-transform: uppercase; 
-        margin: 10px;
-        float: left; 
-        }
-
 .buttonlike a:hover {
     background-color: #000;
     color: #FFF;
@@ -288,7 +265,31 @@ a:visited {
     text-transform: uppercase; 
     margin: 10px;
     }
-        
+
+.buttonlike-left a:link {
+        background-color: #009933;
+        color: #FFF;
+        border-radius: 4px;
+        padding: 6px;
+        font-size: 0.8em;
+        text-decoration: none;
+        text-transform: uppercase; 
+        margin: 0px 10px 0px;
+        float: left; 
+    }
+
+.buttonlike-left a:visited {
+        background-color: #009933;
+        color: #FFF;
+        border-radius: 4px;
+        padding: 6px;
+        font-size: 0.8em;
+        text-decoration: none;
+        text-transform: uppercase; 
+        margin: 0px 10px 0px;
+        float: left; 
+        }
+
 .buttonlike-left a:hover {
     background-color: #000;
     color: #FFF;
@@ -297,7 +298,7 @@ a:visited {
     font-size: 0.8em;
     text-decoration: none;
     text-transform: uppercase; 
-    margin: 10px;
+    margin: 0px 10px 0px;
     float: left; 
     }
 
