@@ -8,6 +8,14 @@
 
         <!--TYPES-->
 
+        <!--PLACE FOR ERROR AND CONFIRM MESSAGE-->
+        {% if error_message %}
+            <p class="error">{{ error_message }} </p>
+        {% endif %}
+        {% if confirm_message %}
+            <p class="confirm">{{ confirm_message }} </p>
+        {% endif %}
+
         <!--ADD TYPE-->
         <div class="add-new">
         <form action="/types" method="POST">
@@ -18,10 +26,6 @@
         </form>
         </div><br/>
 
-        <!--PLACE FOR ERROR MESSAGE-->
-        {% if error_message %}
-            <p class="error">{{ error_message }} </p>
-        {% endif %}
 
         <!--TYPE LIST-->
         <table><tr><th>Name</th><th>ToDos marked</th><th>Delete</th></tr>

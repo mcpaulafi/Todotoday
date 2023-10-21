@@ -324,28 +324,30 @@ def types():
 # Add type
         if type1 == "add_type":
             type_name = request.form["type_name"]
+            error_message = ""
+            confirm_message = ""
 
             if todos.check_type_name(type_name):
-                return render_template("types.html", \
-                error_message="Type name is already in use.", types=list3)
+                error_message="Type name is already in use."
 
             if len(type_name) < 3 or len(type_name) >= 254:
-                return render_template("types.html", \
-                error_message="Type name must be between 3-254 characters.", \
-                types=list3)
-            if todos.add_type(type_name):
-                list3 = todos.get_types()
-                return render_template("types.html", \
-                error_message=f"New type added: {type_name}.", types=list3)
+                error_message="Type name must be between 3-254 characters." 
+            
+            if len(error_message)==0:
+                if todos.add_type(type_name):
+                    confirm_message=f"New type added: {type_name}."
+                else:
+                    error_message="Unable to add new type."
+
             return render_template("types.html", \
-            error_message="Unable to add new type.", types=list3)
+            error_message=error_message, confirm_message=confirm_message, types=list3)
 
 # Delete type
         if type1 == "delete_type":
             type_id = request.form["type_id"]
             if todos.delete_type(type_id):
                 list3 = todos.get_types()
-                return render_template("types.html", error_message="Type deleted.", types=list3)
+                return render_template("types.html", confirm_message="Type deleted.", types=list3)
 
             return render_template("types.html", \
             error_message="Unable to delete a type.", types=list3)
