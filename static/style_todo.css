@@ -85,8 +85,8 @@ div.menu-item p{
 .footer {
     height: 50px;
     padding: 30px 0px 0px 5px;
+    font-style: italic;
     background-color: #CCCCCC;
-    border: 0px solid #FF0000;
 }
 
 
@@ -108,12 +108,16 @@ h4 {
 .error {
     color: #FF0000;
 }
+.confirm {
+    color: #008000;
+}
 .open {
     color: red;
 }
 
 .done {
     color: green;
+
 }
 
 /* TABLE */
