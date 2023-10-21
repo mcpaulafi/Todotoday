@@ -25,22 +25,23 @@ See in detail schema.sql
 
 ## How to use the app
 1. Get project from github
-2. Go to the application directory /todotoday/
-3. On terminal create .env file with the following contents: 
+2. On terminal start psql with command: psql
+3. On psql create database: CREATE DATABASE todotoday
+4. On terminal create tables to the database: psql -d todotoday < schema.sql
+5. On psql write command: \connect todotoday 
+6. On psql write command: \dt. The database should contain tables users, projects, project_users, todo_types, type_users and todos.
+7. Go to the application directory /todotoday/
+8. On terminal create .env file with the following contents: 
     - DATABASE_URL="postgresql:///todotoday"
     - SECRET_KEY='key'
-        - _key = a random 16-character string enclosed within ‘’-marks_
-4. On terminal start venv (create a virtual environment): source venv/bin/activate 
-5. On terminal install dependencies: pip install -r requirements.txt
-6. On terminal start psql with command: psql
-7. On psql create database: CREATE DATABASE todotoday
-8. On terminal create tables to the database: psql -d todotoday < schema.sql
-9. On psql write command: \connect todotoday 
-10. On psql write command: \dt. The database should contain tables users, projects, project_users, todo_types, type_users and todos.
-11. On terminal start the application with the command: flask run
-12. Start a browser and go to url http://127.0.0.1:5000/ (or where Flask tells the app is running).
-13. Begin using "ToDo today" application with registering a username. After login create some types first. Then you can create projects and add todos in them.
-14. If you want to delete the database, on psql use command: DROP DATABASE todotoday;
+        - _key = a random 16-character string enclosed within ''-marks_
+9. On terminal create a virtual environment: python3 -m venv venv
+10. On terminal start venv: source venv/bin/activate 
+11. On terminal install dependencies: pip install -r requirements.txt
+12. On terminal start the application with the command: flask run
+13. Start a browser and go to url http://127.0.0.1:5000/ (or where Flask tells the app is running).
+14. Begin using "ToDo today" application with registering a username. After login create some types first. Then you can create projects and add todos in them.
+15. If you want to delete the database, on psql use command: DROP DATABASE todotoday;
 
 ## Status of the project: First version available
 
