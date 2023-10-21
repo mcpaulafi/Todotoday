@@ -130,7 +130,7 @@ def get_projects(project_id):
     # If no project_id
     return 0
 
-def get_project_todos():
+def get_project_todos(project_id):
     """Get project on which user is listed and its ToDos where user is the assigned_user"""
     user_id = users.user_id()
     try:
@@ -138,8 +138,9 @@ def get_project_todos():
             t1.todo_description, t1.done_date FROM projects p1, project_users pu, todos t1 \
             LEFT JOIN todo_types tt ON tt.type_id=t1.type_id WHERE p1.project_id=pu.project_id \
             AND p1.project_id=t1.project_id AND pu.user_id=:user_id AND t1.assigned_id=:user_id \
+            AND p1.project_id=:project_id \
             ORDER BY p1.project_name, t1.deadline_date"
-        result = db.session.execute(text(sql), {"user_id":user_id, "assigned_user":user_id})
+        result = db.session.execute(text(sql), {"user_id":user_id, "assigned_user":user_id, "project_id":project_id})
         return result.fetchall()
     except Exception:
         return False

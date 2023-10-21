@@ -101,177 +101,157 @@ def manage():
     """Managing Projects and ToDos"""
 
     list1 = todos.get_projects(None)
-    list2 = todos.get_project_todos()
+    list2 = None                        # No project_id available
     list3 = todos.get_types()
     list4 = todos.get_project_names()
     error_msg = ""
+
     if len(list3) == 0:
         error_msg = 'First create a Type on Type Management page.'
 
+    # POST
     if request.method == "POST":
         type1 = request.form["form_type"]
 
-# Add project
+        #CSRF vulnerability check
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+
+        # Add project
         if type1 == "add_project":
-
-            #CSRF vulnerability check
-            if session["csrf_token"] != request.form["csrf_token"]:
-                abort(403)
-
             project_name = request.form["project_name"]
+            error_msg = ""
             try:
                 project_deadline = request.form["project_deadline"]
-            except Exception:
-                return render_template("manage.html", \
-                error_message="Project not added. Check date format in deadline.", \
-                    types=list3, project_todos=list2, projects=list1, project_names=list4, project_name=project_name)
+            except:
+                error_msg = "Project not added. Check date format in deadline."
 
             #Someday fix this to minute level
             try:
                 project_deadline = datetime.strptime(request.form["project_deadline"], '%d.%m.%Y')
-            except Exception:
-                    return render_template("manage.html", \
-                    error_message="Project not added. Check the deadline date.", \
-                    project_name=project_name, types=list3, project_todos=list2, projects=list1, \
-                    project_names=list4)
+            except:
+                error_msg = "Project not added. Check the deadline date."
 
-            if project_deadline < (datetime.now()-timedelta(1)):
-                    return render_template("manage.html", \
-                    error_message="Project not added. Deadline date is in the past.", \
-                    project_name=project_name, types=list3, project_todos=list2, projects=list1, \
-                    project_names=list4)
+            if error_msg!="Project not added. Check the deadline date.":
+                if project_deadline < (datetime.now()-timedelta(1)):
+                    error_msg = "Project not added. Deadline date is in the past."
 
             if len(project_name) < 3 or len(project_name) >= 254:
-                return render_template("manage.html", \
-                error_message="Project name must be between 3-254 characters.", \
-                types=list3, project_todos=list2, projects=list1, project_names=list4, project_name=project_name)
+                error_msg = "Project name must be between 3-254 characters."
 
             if todos.check_project_name(project_name):
-                return render_template("manage.html", \
-                error_message="Project name is already in use.", \
-                types=list3, project_todos=list2, projects=list1, project_names=list4, project_name=project_name)
+                error_msg = "Project name is already in use."
 
-            if todos.add_project(project_name, project_deadline):
-                # Latest project that user has created
-                project_id = todos.get_latest_project_id()
+            if error_msg == "":
+                if todos.add_project(project_name, project_deadline):
+                    # Latest project that user has created
+                    project_id = todos.get_latest_project_id()
 
-                list1 = todos.get_projects(project_id)
-                list2 = todos.get_project_todos()
-                list3 = todos.get_types()
-                list4 = todos.get_project_names()
-                return render_template("manage.html", \
-                error_message=f"New project added: {project_name}.", \
-                types=list3, project_todos=list2, projects=list1, project_names=list4)
+                    list1 = todos.get_projects(project_id)
+                    list2 = todos.get_project_todos(project_id)
+                    list3 = todos.get_types()
+                    list4 = todos.get_project_names()
+                    return render_template("manage.html", \
+                    confirm_message=f"New project added: {project_name}.", \
+                    types=list3, project_todos=list2, projects=list1, project_names=list4)
+                else:
+                    error_msg = "Unable to add new project."
 
             return render_template("manage.html", \
-            error_message="Unable to add new project.", \
-            types=list3, project_todos=list2, projects=list1, project_names=list4, project_name=project_name)
+            types=list3, project_todos=list2, projects=list1, project_names=list4, project_name=project_name, error_message_add=error_msg)
 
-# Select project
+        # Select project
         if type1 == "get_project":
             project_id = request.form["project_id"]
 
-            #CSRF vulnerability check
-            if session["csrf_token"] != request.form["csrf_token"]:
-                abort(403)
+            list1 = todos.get_projects(project_id)
+            list2 = todos.get_project_todos(project_id)
+            list3 = todos.get_types()
+            list4 = todos.get_project_names()
 
             try:
-                list1 = todos.get_projects(project_id)
-                list2 = todos.get_project_todos()
-                list3 = todos.get_types()
-                list4 = todos.get_project_names()
                 return render_template("manage.html", \
-                error_message="Project selected for editing.", \
+                confirm_message_add="Project selected for editing.", \
                 types=list3, project_todos=list2, projects=list1, project_names=list4)
-            except Exception:
+            except:
                 return render_template("manage.html", \
-                error_message="Unable to get the project.", types=list3, project_todos=list2, \
+                error_message_add="Unable to get the project.", types=list3, project_todos=list2, \
                 projects=list1, project_names=list4)
 
-# Delete Project
+        # Delete Project
         if type1 == "delete_project":
-
-            #CSRF vulnerability check
-            if session["csrf_token"] != request.form["csrf_token"]:
-                abort(403)
-
             project_id = request.form["project_id"]
+
+            list1 = todos.get_projects(project_id)
+            list2 = todos.get_project_todos(project_id)
+            list3 = todos.get_types()
+            list4 = todos.get_project_names()
+
             if todos.delete_project(project_id):
                 list1 = todos.get_projects(None)
-                list2 = todos.get_project_todos()
-                list3 = todos.get_types()
-                list4 = todos.get_project_names()
-                return render_template("manage.html", error_message="Project deleted.", \
+                list2 = None
+                return render_template("manage.html", confirm_message="Project deleted.", \
                 types=list3, project_todos=list2, projects=list1, project_names=list4)
 
-            list1 = todos.get_projects(None)
-            list2 = todos.get_project_todos()
-            list3 = todos.get_types()
             return render_template("manage.html", \
             error_message="Unable to delete a project.", \
             types=list3, project_todos=list2, projects=list1, project_names=list4)
 
-# Add Todos
+        # Add Todos
         if type1 == "add_todo":
-
-            #CSRF vulnerability check
-            if session["csrf_token"] != request.form["csrf_token"]:
-                abort(403)
-
-            todo_description = request.form["todo_description"]
             project_id = request.form["project_id"]
+            todo_description = request.form["todo_description"]
             type_id = request.form["type_id"]
+
+            list1 = todos.get_projects(project_id)
+            list2 = todos.get_project_todos(project_id)
+            list3 = todos.get_types()
+            list4 = todos.get_project_names()
+
+            error_msg_todo = ""
+
             try:
                 todo_deadline = datetime.strptime(request.form["todo_deadline"], '%d.%m.%Y')
-            except Exception:
-                list1 = todos.get_projects(project_id)
-                list2 = todos.get_project_todos()
-                list3 = todos.get_types()
-                list4 = todos.get_project_names()
-                return render_template("manage.html", \
-                error_message="Todo not added. Check date format in deadline.", \
-                todo_description=todo_description, types=list3, project_todos=list2, \
-                projects=list1, project_names=list4)
+            except:
+                error_msg_todo = "Todo not added. Check date format in deadline."
 
-            #Someday fix this to minute level
-            if todo_deadline < (datetime.now()-timedelta(1)):
-                list1 = todos.get_projects(project_id)
-                list2 = todos.get_project_todos()
-                list3 = todos.get_types()
-                list4 = todos.get_project_names()
-                return render_template("manage.html", \
-                error_message="ToDo not added. Deadline date is in the past.", \
-                todo_description=todo_description, types=list3, project_todos=list2, \
-                projects=list1, project_names=list4)
+            if error_msg_todo != "Todo not added. Check date format in deadline.":
+                #Someday fix this to minute level
+                if todo_deadline < (datetime.now()-timedelta(1)):
+                    error_msg_todo = "ToDo not added. Deadline date is in the past."
 
-            if todos.add_todo(todo_description, project_id, type_id, todo_deadline):
-                list1 = todos.get_projects(project_id)
-                list2 = todos.get_project_todos()
-                list3 = todos.get_types()
-                list4 = todos.get_project_names()
-                return render_template("manage.html", \
-                error_message=f"Added a new ToDo {todo_description}", types=list3, \
-                project_todos=list2, projects=list1, project_names=list4)
+            if error_msg_todo == "":
+                if todos.add_todo(todo_description, project_id, type_id, todo_deadline):
+                    list2 = todos.get_project_todos(project_id)
+
+                    return render_template("manage.html", \
+                    confirm_message_todo=f"Added a new ToDo {todo_description}", types=list3, \
+                    project_todos=list2, projects=list1, project_names=list4)
+                else:
+                    error_msg_todo = "Unable to add ToDo."
+
+            return render_template("manage.html", \
+            error_message_todo=error_msg_todo, types=list3, \
+            project_todos=list2, projects=list1, project_names=list4)
+
+
 # Done ToDo
         if type1 == "done_todo":
 
-            #CSRF vulnerability check
-            if session["csrf_token"] != request.form["csrf_token"]:
-                abort(403)
-
             todo_id = request.form["todo_id"]
             project_id = request.form["project_id"]
+
             if todos.mark_done(todo_id):
                 list1 = todos.get_projects(project_id)
-                list2 = todos.get_project_todos()
+                list2 = todos.get_project_todos(project_id)
                 list3 = todos.get_types()
                 list4 = todos.get_project_names()
                 return render_template("manage.html", \
-                error_message="ToDo marked as done.", types=list3, project_todos=list2, \
+                confirm_message_todo="ToDo marked as done.", types=list3, project_todos=list2, \
                 projects=list1, project_names=list4)
 
             list1 = todos.get_projects(project_id)
-            list2 = todos.get_project_todos()
+            list2 = todos.get_project_todos(project_id)
             list3 = todos.get_types()
             list4 = todos.get_project_names()
             return render_template("manage.html", \
@@ -280,26 +260,23 @@ def manage():
 
 # Delete ToDo
         if type1 == "delete_todo":
-
-            #CSRF vulnerability check
-            if session["csrf_token"] != request.form["csrf_token"]:
-                abort(403)
-
             todo_id = request.form["todo_id"]
             project_id = request.form["project_id"]
+
+            list1 = todos.get_projects(project_id)
+            list2 = todos.get_project_todos(project_id)
+            list3 = todos.get_types()
+            list4 = todos.get_project_names()
+
             if todos.delete_todo(todo_id):
-                list1 = todos.get_projects(project_id)
-                list2 = todos.get_project_todos()
-                list3 = todos.get_types()
-                list4 = todos.get_project_names()
-                return render_template("manage.html", error_message="ToDo deleted.", \
+                return render_template("manage.html", confirm_message_todo="ToDo deleted.", \
                 types=list3, project_todos=list2, projects=list1, project_names=list4)
 
-            return render_template("manage.html", error_message="Unable to delete a ToDo.", \
+            return render_template("manage.html", error_message_todo="Unable to delete a ToDo.", \
             types=list3, project_todos=list2, projects=list1, project_names=list4)
 
         #If no project is selected
-        return render_template("manage.html", error_message="No actions done.", types=list3, \
+        return render_template("manage.html", error_message_todo="No actions done.", types=list3, \
         project_todos=list2, projects=list1, project_name=list4)
 
     #GET
@@ -338,7 +315,8 @@ def types():
                     confirm_message=f"New type added: {type_name}."
                 else:
                     error_message="Unable to add new type."
-
+            
+            list3 = todos.get_types()
             return render_template("types.html", \
             error_message=error_message, confirm_message=confirm_message, types=list3)
 
@@ -351,7 +329,6 @@ def types():
 
             return render_template("types.html", \
             error_message="Unable to delete a type.", types=list3)
-        else:
-            return render_template("types.html", error_message="Unable to delete type.", types=list3)
+
     #GET
     return render_template("types.html", types=list3)

@@ -33,7 +33,7 @@
             {% if today %}
             {% else %}
             <!--TODO LIST EMPTY-->
-            <tr><td colspan='5'>No open ToDos for today!</td></tr>
+            <tr><td colspan='5'><span class="confirm">No open ToDos for today!</span></td></tr>
             {% endif %}
             </table>
 
@@ -62,7 +62,7 @@
              {% if tomorrow %}
              {% else %}
              <!--TODO LIST EMPTY-->
-             <tr><td colspan='5'>No open ToDos for tomorrow!</td></tr>
+             <tr><td colspan='5'><span class="confirm">No open ToDos for tomorrow!</span></td></tr>
              {% endif %}
  
             </table>
@@ -93,7 +93,7 @@
             {% if todos_all %}
             {% else %}
             <!--TODO LIST EMPTY-->
-            <tr><td colspan='5'>No ToDos open!</td></tr>
+            <tr><td colspan='5'><span class="confirm">No ToDos open!</style></td></tr>
             {% endif %}
             </table>
 

@@ -5,9 +5,18 @@
 
     {% if session.user_id %}
 
+        <!--PLACE FOR ERROR / CONFIRM MESSAGE-->
+        {% if error_message_add %}
+            <p class="error">{{ error_message_add }} </p>
+         {% endif %}
+         {% if confirm_message_add %}
+         <p class="confirm">{{ confirm_message_add }} </p>
+        {% endif %}
+        {% if confirm_message %}
+        <p class="confirm">{{ confirm_message }} </p>
+       {% endif %}
 
         <div class="add-new-container">
-
             <!--PROJECT LIST-->
             {% if project_names %}
             <div class="add-new-left">
@@ -38,18 +47,16 @@
             </div>
 
         </div>
-        <!--PLACE FOR ERROR MESSAGE-->
-        {% if error_message %}
-            <p class="error">{{ error_message }} </p>
-        {% endif %}
+
 
         <!--PROJECT DETAILS-->
         {% if projects %}
             {% for col in projects %}
                 <p>&nbsp;</p>
                 <h3>Project: {{ col[1] }}</h3>
-                <p><strong>Status</strong> {{ col[2] }}/{{ col[3] }} ToDos completed.
+                <p><strong>Status</strong> <span class="confirm">{{ col[2] }}/{{ col[3] }}</span> ToDos completed.
                 <strong>Deadline</strong> {% if col[4] %} {{ col[4].strftime("%d.%m.%Y") }} {% else %} Not set {% endif %}</p>
+
                 <!--ADD TODO-->
                 {% if types %}
                     <div class="add-new">
@@ -71,11 +78,19 @@
                 {% else %}
                     <p>Create a <a href="/types">Type</a> before you can add ToDos!</p>
                 {% endif%}
+
+                <!--PLACE FOR ERROR / CONFIRM MESSAGE-->
+                {% if error_message_todo %}
+                    <p class="error">{{ error_message_todo }} </p>
+                {% endif %}
+                {% if confirm_message_todo %}
+                    <p class="confirm">{{ confirm_message_todo }} </p>
+                {% endif %}
+
                 <!--TODO LIST-->
                 <table>
                     <tr><th>Deadline</th><th>Type</th><th>Description</th><th>Done date</th><th>Delete</th></tr>
                 {% for col2 in project_todos %}
-                    {% if col[0] == col2[0] %}
                         <tr>
                             <td> {{ col2[3].strftime("%d.%m.%Y") }} </td>
                             <td> {{ col2[4] }} </td>
@@ -102,14 +117,18 @@
             
                             </td>
                         </tr>
-                        <!--KESKEN: Ilmoitus, jos TODOita ei ole vielä yhtäään -->
-                    {% endif %}
-
                 {% endfor %}
+
+                {% if project_todos %}
+                {% else %}
+                <!--TODO LIST EMPTY-->
+                <tr><td colspan='5'><span class="confirm">No ToDos yet!</span></td></tr>
+                {% endif %}
+
                 </table>
                 <div class="add-new">
                     <h4>Delete project</h4>
-                    All ToDos are deleted too.
+                    All ToDos in the project are also deleted.
                         <form action="/manage" method="POST">
                         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                         <input type="hidden" name="form_type" value="delete_project">
