@@ -48,20 +48,20 @@ def register():
             error_msg="Password must be between 4-254 characters."
         if len(username) < 2 or len(username) >= 254:
             error_msg="Username must be between 2-254 characters."
+        if users.check_name(username):
+            """Do not accept duplicate usernames"""
+            error_msg="Username is already registered."
+
         if len(error_msg)>0:
             return render_template("register.html", username_post=username, \
                           error_message=error_msg)
-        error_msg = ""
-        #Do not accept duplicate usernames
-        if users.check_name(username):
-            #Register user
-            if users.register(username, password1):
-                # After registration redirect to ToDo list
-                print("After registration redirect")
-                return render_template("todolist.html")
-            error_msg="Unable to create new user."
         else:
-            error_msg="Username is already in use."
+            if users.register(username, password1):
+                """ Register user"""
+                # After registration redirect to ToDo list
+                return render_template("todolist.html")
+        # Unknown error
+        error_msg="Unable to create new user."
         if len(error_msg)>0:
             return render_template("register.html", error_message=error_msg)
     # GET

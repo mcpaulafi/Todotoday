@@ -61,8 +61,8 @@ def check_name(username):
     """Is the new name already registered?"""
     sql = "SELECT username FROM users WHERE username=:username"
     result = db.session.execute(text(sql), {"username":username})
-    user = result.fetchone()
-    if not user:
+    check_name_user = result.fetchone()
+    if check_name_user:
         return True
     return False
     
