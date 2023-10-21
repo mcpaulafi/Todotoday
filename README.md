@@ -3,26 +3,19 @@
 
 ToDo Today is a simple task management application for small projects. ToDos (tasks) with a deadline are linked to a project and a ToDo is classified with a type. 
 
-For example a student can use this application to follow on a daily basis, which tasks, essays, reports, meetings, teamworks etc. are due today or tomorrow. From a simple view the student can see how the completing of different courses (= projects) is going. 
+For example a student can use this application to follow on a daily basis, which ToDos, essays, reports, meetings, teamworks etc. are due today or tomorrow. From a simple view the student can see how the completing of different courses (= projects) is going. 
 
 ## Features
 - Register a user account
 - Login and logout with the account
-- User can add/view/delete only his/hers projects, tasks and task types
-- View of ToDos: "ToDos for Today", "ToDos for Tomorrow", "All Open ToDos" 
+- User can add/view/delete only his/hers projects, ToDos and ToDo types
+- View of ToDo list: ToDos for Today / Tomorrow / All Open ToDos and filter ToDos per Type
 - View project status: done/total ToDos per project
-
-## Screenshots from 23.9.2023 version
-<img src="https://github.com/mcpaulafi/Todotoday/blob/main/Drafts/2023-09-23_login2.png">
-<img src="https://github.com/mcpaulafi/Todotoday/blob/main/Drafts/2023-09-23_registration2.png">
-<img src="https://github.com/mcpaulafi/Todotoday/blob/main/Drafts/2023-09-23_todolist2.png">
-<img src="https://github.com/mcpaulafi/Todotoday/blob/main/Drafts/2023-09-23_projects2.png">
-<img src="https://github.com/mcpaulafi/Todotoday/blob/main/Drafts/2023-09-23_types2.png">
 
 ## Database
 See in detail schema.sql
 
-Tables
+### Tables
 - users
 - projects
 - project_users
@@ -49,27 +42,7 @@ Tables
 13. Begin using "ToDo today" application with registering a username. After login create some types first. Then you can create projects and add todos in them.
 14. If you want to delete the database, on psql use command: DROP DATABASE todotoday;
 
-## Status of the project: Development phase 
-- [x] Database  
-- [x] Login and logout with the account
-- [x] User can add projects, todos and types
-- [x] User can view projects, todos and types
-- [x] User can delete projects, todos and types
-- [x] Page: ToDo list: "ToDos for Today", "ToDos for Tomorrow", "All Open ToDos" 
-- [x] Page: Manage projects, major usability issues:
-    - [x] after POST-action, can error messages be shown next to where it occured?
-    - [x] re-design layout: selection of projects, show only one project data at the time
-    - [x] Add Done-button to here also 
-- [x] Page: Manage types (add/delete)
-- [x] Layout, minor issues:
-    - [x] Page tab: User login, change to the right, so ToDo list is first tab on right
-    - [ ] Set more precisely location of Submit-buttons 
-- [ ] Evaluations on posted data from forms, some to be added:
-    - [x] decline dates in the past
-    - [ ] more issues commented on the code
-- [x] CSRF vulnerability check
-- [ ] Error handling clean up
-- [ ] From issue report, find&fix: ToDo listan tomorrow-osion "No todos tomorrow!"-teksti kasautuu oudosti 
+## Status of the project: First version available
 
 ## Development log
 - This project is made on "TKT20019 Tietokannat ja web-ohjelmointi" course in the University of Helsinki
@@ -77,10 +50,17 @@ Tables
 - 22nd Sep 2023 Second draft, most functionalities available
 - 5th October 2023 Third draft, functionalities done, manage projects page to be redesigned
 - 16th Oct 2023: finalising
+- 21st Oct 2023: first version ready for grading
 
-### Future development / if there is time
-- Sort with types, add color to type
+### Future development possibilities
 - Add multiple users on a project (noted in the database design)
 - Assigning a ToDo to another user in the project (noted in the current code)
 - Copy a project with tasks to another user 
 - Admin role
+
+## Screenshots from 21.10.2023 version
+<img src="https://github.com/mcpaulafi/Todotoday/blob/main/Drafts/2023-10-21_login.png">
+<img src="https://github.com/mcpaulafi/Todotoday/blob/main/Drafts/2023-10-21_register.png">
+<img src="https://github.com/mcpaulafi/Todotoday/blob/main/Drafts/2023-10-21_todolist.png">
+<img src="https://github.com/mcpaulafi/Todotoday/blob/main/Drafts/2023-10-21_projects.png">
+<img src="https://github.com/mcpaulafi/Todotoday/blob/main/Drafts/2023-10-21_types.png">
