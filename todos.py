@@ -37,6 +37,23 @@ def get_list(time1):
 
     return result.fetchall()
 
+def get_list_type(type_id):
+    """Query of ToDos assigned_to user (atm same as creator) filter type"""
+    user_id = users.user_id()
+    if type_id != "all":
+        sql = "SELECT T.deadline_date, P.project_name, TT.type_name, T.todo_description, \
+            T.done_date, T.todo_id FROM todos T LEFT JOIN projects P ON T.project_id=P.project_id \
+                LEFT JOIN todo_types TT ON T.type_id=TT.type_id  WHERE T.assigned_id=:user_id AND \
+                T.done_date IS NULL AND T.visible=TRUE AND T.type_id=:type_id ORDER BY T.deadline_date"
+        result = db.session.execute(text(sql), {"user_id":user_id, "type_id":type_id})
+    else:
+        sql = "SELECT T.deadline_date, P.project_name, TT.type_name, T.todo_description, \
+        T.done_date, T.todo_id FROM todos T LEFT JOIN projects P ON T.project_id=P.project_id \
+            LEFT JOIN todo_types TT ON T.type_id=TT.type_id  WHERE T.assigned_id=:user_id AND \
+            T.done_date IS NULL AND T.visible=TRUE ORDER BY T.deadline_date"
+        result = db.session.execute(text(sql), {"user_id":user_id})
+    return result.fetchall()
+
 def add_todo(todo_description, project_id, type_id, deadline_date):
     """Adding ToDo and it is assigned to creator"""
     user_id = users.user_id()

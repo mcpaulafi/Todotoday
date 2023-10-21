@@ -61,11 +61,10 @@ def register():
                 # After registration redirect to ToDo list
                 return render_template("todolist.html")
         # Unknown error
-        error_msg="Unable to create new user."
+        error_msg="Unable to create a new user."
         if len(error_msg)>0:
             return render_template("register.html", error_message=error_msg)
     # GET
-    # print("Pointer: GET register")
     return render_template("register.html")
 
 @app.route("/todolist", methods=["GET", "POST"])
@@ -74,27 +73,41 @@ def todolist():
     list1 = todos.get_list('all')
     list2 = todos.get_list('today')
     list3 = todos.get_list('tomorrow')
+    get_types = todos.get_types()
 
-# Done ToDo
     if request.method == "POST":
+
+        list1 = todos.get_list('all')
+        list2 = todos.get_list('today')
+        list3 = todos.get_list('tomorrow')
+        form_type = request.form["form_type"]
 
         #CSRF vulnerability check
         if session["csrf_token"] != request.form["csrf_token"]:
             abort(403)
 
-        todo_id = request.form["id"]
-        if todos.mark_done(todo_id):
-            list1 = todos.get_list('all')
-            list2 = todos.get_list('today')
-            list3 = todos.get_list('tomorrow')
+        # Get types
+        if form_type == "get_types":
+            type_id = request.form["type_id"]
+            list4 = todos.get_list_type(type_id)
+            confirm_message_type = "Type selected."
+            if type_id == "all":
+                confirm_message_type = ""
 
-            return render_template("todolist.html", error_message="ToDo marked as done.", \
-                                   todos_all=list1, today=list2, tomorrow=list3)
-        #Error
-        return render_template("todolist.html", error_message="Unable mark a ToDo as done.", \
-                               todos_all=list1, today=list2, tomorrow=list3)
+            return render_template("todolist.html", confirm_message_type=confirm_message_type, \
+                                todos_all=list4, today=list2, tomorrow=list3, get_types=get_types)
+
+        # Done ToDo
+        if form_type == "done_todo":
+            todo_id = request.form["todo_id"]
+            if todos.mark_done(todo_id):
+                return render_template("todolist.html", confirm_message="ToDo marked as done.", \
+                                    todos_all=list1, today=list2, tomorrow=list3, get_types=get_types)
+            #Error
+            return render_template("todolist.html", error_message="Unable mark a ToDo as done.", \
+                                todos_all=list1, today=list2, tomorrow=list3, get_types=get_types)
     # GET
-    return render_template("todolist.html", todos_all=list1, today=list2, tomorrow=list3)
+    return render_template("todolist.html", todos_all=list1, today=list2, tomorrow=list3, get_types=get_types)
 
 @app.route("/manage", methods=["GET", "POST"])
 def manage():
@@ -241,19 +254,18 @@ def manage():
             todo_id = request.form["todo_id"]
             project_id = request.form["project_id"]
 
-            if todos.mark_done(todo_id):
-                list1 = todos.get_projects(project_id)
-                list2 = todos.get_project_todos(project_id)
-                list3 = todos.get_types()
-                list4 = todos.get_project_names()
-                return render_template("manage.html", \
-                confirm_message_todo="ToDo marked as done.", types=list3, project_todos=list2, \
-                projects=list1, project_names=list4)
-
             list1 = todos.get_projects(project_id)
             list2 = todos.get_project_todos(project_id)
             list3 = todos.get_types()
             list4 = todos.get_project_names()
+ 
+            if todos.mark_done(todo_id):
+                list2 = todos.get_project_todos(project_id)
+
+                return render_template("manage.html", \
+                confirm_message_todo="ToDo marked as done.", types=list3, project_todos=list2, \
+                projects=list1, project_names=list4)
+
             return render_template("manage.html", \
             error_message="Unable mark a ToDo as done.", types=list3, project_todos=list2, \
             projects=list1, project_names=list4)
@@ -269,6 +281,7 @@ def manage():
             list4 = todos.get_project_names()
 
             if todos.delete_todo(todo_id):
+                list2 = todos.get_project_todos(project_id)
                 return render_template("manage.html", confirm_message_todo="ToDo deleted.", \
                 types=list3, project_todos=list2, projects=list1, project_names=list4)
 

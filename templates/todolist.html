@@ -4,8 +4,12 @@
 {% block content %}
 
     {% if session.user_id %}
+        <!-- PLACE FOR ERROR / CONFIRM MESSAGES -->
         {% if error_message %}
             <p class="error">{{ error_message }} </p>
+        {% endif %}
+        {% if confirm_message %}
+        <p class="confirm">{{ confirm_message }} </p>
         {% endif %}
             <h3>Today</h3>
          <table>
@@ -68,6 +72,31 @@
             </table>
 
         <h3>All Open ToDos</h3>
+
+        {% if confirm_message_type %}
+        <p class="confirm">{{ confirm_message_type }} </p>
+        {% endif %}
+
+        <div class="add-new-container">
+            <!--PROJECT LIST-->
+            {% if get_types %}
+            <div class="add-new-left">
+                <h4>Select a type</h4>
+                <form action="/todolist" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                    <input type="hidden" name="form_type" value="get_types">
+                    <select name="type_id">
+                        <option value="all">All types</option>
+                {% for col in get_types %}
+                        <option value="{{ col[0] }}">{{ col[1] }}</option>
+                {% endfor %}
+                    </select>
+                    <input type="submit" class="done" value="SELECT">
+                </form>
+            </div>
+            {% endif %}
+        </div>
+
         <table>
             <tr><th>Deadline</th><th>Project</th><th>Type</th><th>Description</th><th>Done</th></tr>
             {% for col in todos_all %}
@@ -82,7 +111,8 @@
                     {% else %} 
                         <form action="/todolist" method="POST">
                         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-                        <input type="hidden" name="id" value="{{ col[5] }}">
+                        <input type="hidden" name="form_type" value="done_todo">
+                        <input type="hidden" name="todo_id" value="{{ col[5] }}">
                         <input type="submit" class="done" value="DONE">
                         </form>
 
