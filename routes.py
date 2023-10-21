@@ -101,6 +101,10 @@ def todolist():
         if form_type == "done_todo":
             todo_id = request.form["todo_id"]
             if todos.mark_done(todo_id):
+                list1 = todos.get_list('all')
+                list2 = todos.get_list('today')
+                list3 = todos.get_list('tomorrow')
+
                 return render_template("todolist.html", confirm_message="ToDo marked as done.", \
                                     todos_all=list1, today=list2, tomorrow=list3, get_types=get_types)
             #Error
@@ -236,6 +240,7 @@ def manage():
 
             if error_msg_todo == "":
                 if todos.add_todo(todo_description, project_id, type_id, todo_deadline):
+                    list1 = todos.get_projects(project_id) # status count update
                     list2 = todos.get_project_todos(project_id)
 
                     return render_template("manage.html", \
