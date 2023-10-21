@@ -20,7 +20,7 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
         if users.login(username, password):
-            # After login redirect to ToDo list
+            # After login redirect to ToDo list, note menu does not update
             return redirect("/todolist")
         return render_template("login.html", error_message="Wrong username or password")
 	#GET
