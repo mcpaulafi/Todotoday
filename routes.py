@@ -203,6 +203,7 @@ def manage():
             if todos.delete_project(project_id):
                 list1 = todos.get_projects(None)
                 list2 = None
+                list4 = todos.get_project_names()
                 return render_template("manage.html", confirm_message="Project deleted.", \
                 types=list3, project_todos=list2, projects=list1, project_names=list4)
 
