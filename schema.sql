@@ -9,5 +9,5 @@ CREATE TABLE todo_types (type_id SERIAL PRIMARY KEY, type_name VARCHAR (255) NOT
 CREATE TABLE todos (todo_id SERIAL PRIMARY KEY, project_id SMALLINT NOT NULL, assigned_id SMALLINT, type_id SMALLINT, todo_description VARCHAR (255) NOT NULL, created_by SMALLINT, create_date TIMESTAMP NOT NULL, deadline_date DATE DEFAULT NULL, done_date TIMESTAMP DEFAULT NULL, visible BOOLEAN NOT NULL DEFAULT TRUE, FOREIGN KEY(project_id) REFERENCES projects(project_id) ON DELETE CASCADE); 
 
 CREATE TABLE type_users (type_id SMALLINT NULL, user_id SMALLINT NOT NULL,
- FOREIGN KEY(type_id) REFERENCES todo_types(type_id) ON DELETE SET NULL,
+ FOREIGN KEY(type_id) REFERENCES todo_types(type_id) ON DELETE CASCADE,
  FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE);
